@@ -1,4 +1,6 @@
 composer.phar
 /vendor/
-.vscode
+.vscode/
 composer.lock
+.env
+.phpunit.cache
