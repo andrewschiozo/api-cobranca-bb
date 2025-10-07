@@ -1,0 +1,25 @@
+{
+    "name": "andrewschiozo/api-cobranca-bb",
+    "description": "Integração com a API de Cobranças do Banco do Brasil",
+    "type": "library",
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "Andrewschiozo\\ApiCobrancaBb\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Andrewschiozo\\ApiCobrancaBb\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anrews Costa Chiozo",
+            "email": "andrewschiozo@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^12.4"
+    }
+}
