@@ -21,7 +21,7 @@ class CobrancaResponseParser
         $data = json_decode($jsonResponse, true, 512, JSON_THROW_ON_ERROR);
 
         return [
-            'id' => $data['numero_cobranca'] ?? null,
+            'numero_cobranca' => $data['numero_cobranca'] ?? null,
             'status' => $data['status'] ?? 'DESCONHECIDO',
         ];
     }
