@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace Andrewschiozo\ApiCobrancaBb\Domain\Services;
+namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
 
 /**
  * Serviço responsável por formatar e validar os dados internos de uma Cobrança
