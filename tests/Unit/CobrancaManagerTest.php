@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaResponseParser;
 use PHPUnit\Framework\TestCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaManager;
@@ -37,7 +38,7 @@ class CobrancaManagerTest extends TestCase
         $fakeAdapter = new FakeHttpClientAdapter();
         $fakeAdapter->setPostResponse($respostaAPI);
 
-        $manager = new CobrancaManager($fakeAdapter, new CobrancaFormatter());
+        $manager = new CobrancaManager($fakeAdapter, new CobrancaFormatter(), new CobrancaResponseParser());
 
         $resultado = $manager->emitirCobranca($mockDadosCobranca);
 
@@ -62,7 +63,7 @@ class CobrancaManagerTest extends TestCase
             ->willThrowException(new HttpCommunicationException('Erro de conexão simulado.'));
 
         $mockDadosCobranca = $this->mockDadosCobranca;
-        $manager = new CobrancaManager($mockAdapter, new CobrancaFormatter());
+        $manager = new CobrancaManager($mockAdapter, new CobrancaFormatter(), new CobrancaResponseParser());
         $manager->emitirCobranca($mockDadosCobranca);
     }
 }
