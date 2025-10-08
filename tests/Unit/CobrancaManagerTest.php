@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaManager;
 use AndrewsChiozo\ApiCobrancaBb\Adapters\FakeHttpClientAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
@@ -12,23 +13,33 @@ use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 class CobrancaManagerTest extends TestCase
 {
     /**
+     * Dados de cobrança mockados
+     * @var array
+     */
+    private array $mockDadosCobranca = [
+        'valor' => 100.5,
+        'vencimento_data' => '2025-12-20',
+        'pagador_documento' => '12345678901',
+        'pagador_nome' => 'João da Silva',
+        'convenio_id' => 98765,
+        'nosso_numero' => 'ABC123XYZ'
+    ];
+
+    /**
      * Testa o cenário de sucesso ao emitir uma cobrança.
      */
     public function testEmissaoCobrancaComSucesso(): void
     {
-        $dadosCobranca = [
-            'valor' => 100.50,
-            'vencimento' => '2025-10-30',
-        ];
+        $mockDadosCobranca = $this->mockDadosCobranca;
 
         $respostaAPI = '{"numero_cobranca": "1234567890", "status": "REGISTRADA"}';
         
         $fakeAdapter = new FakeHttpClientAdapter();
         $fakeAdapter->setPostResponse($respostaAPI);
 
-        $manager = new CobrancaManager($fakeAdapter);
+        $manager = new CobrancaManager($fakeAdapter, new CobrancaFormatter());
 
-        $resultado = $manager->emitirCobranca($dadosCobranca);
+        $resultado = $manager->emitirCobranca($mockDadosCobranca);
 
         $this->assertIsArray($resultado);
         $this->assertArrayHasKey('numero_cobranca', $resultado);
@@ -50,7 +61,8 @@ class CobrancaManagerTest extends TestCase
             ->method('post')
             ->willThrowException(new HttpCommunicationException('Erro de conexão simulado.'));
 
-        $manager = new CobrancaManager($mockAdapter);
-        $manager->emitirCobranca([]);
+        $mockDadosCobranca = $this->mockDadosCobranca;
+        $manager = new CobrancaManager($mockAdapter, new CobrancaFormatter());
+        $manager->emitirCobranca($mockDadosCobranca);
     }
 }
