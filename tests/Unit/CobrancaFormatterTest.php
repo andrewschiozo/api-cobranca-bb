@@ -2,31 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Andrewschiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Andrewschiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter;
 
 class CobrancaFormatterTest extends TestCase
 {
+    private array $mockDadosCobranca = [
+        'valor' => 100.5,
+        'vencimento_data' => '2025-12-20',
+        'pagador_documento' => '12345678901',
+        'pagador_nome' => 'João da Silva',
+        'convenio_id' => 98765,
+        'nosso_numero' => 'ABC123XYZ'
+    ];
+
     /**
      * Testa se o formatador transforma corretamente os dados internos para o payload do BB.
      */
     public function testFormatoBasicoCorreto(): void
     {
 
+        $mockDadosCobranca = $this->mockDadosCobranca;
         $formatter = new CobrancaFormatter();
-        $dadosInternos = [
-            'valor' => 100.5,
-            'vencimento_data' => '2025-12-20',
-            'pagador_documento' => '12345678901',
-            'pagador_nome' => 'João da Silva',
-            'convenio_id' => 98765,
-            'nosso_numero' => 'ABC123XYZ'
-        ];
+        $payload = $formatter->format($mockDadosCobranca);
         
-        $payload = $formatter->format($dadosInternos);
-
         $this->assertIsArray($payload);
         
         // Verifica se o valor foi formatado para string com 2 casas decimais
@@ -35,10 +36,10 @@ class CobrancaFormatterTest extends TestCase
         
         // Verifica se o mapeamento de campos ocorreu
         $this->assertArrayHasKey('dataVencimento', $payload);
-        $this->assertEquals($dadosInternos['vencimento_data'], $payload['dataVencimento']);
+        $this->assertEquals($mockDadosCobranca['vencimento_data'], $payload['dataVencimento']);
 
         // Verifica a estrutura do pagador (aninhamento)
         $this->assertArrayHasKey('dadosPagador', $payload);
-        $this->assertEquals($dadosInternos['pagador_documento'], $payload['dadosPagador']['cpfCnpj']);
+        $this->assertEquals($mockDadosCobranca['pagador_documento'], $payload['dadosPagador']['cpfCnpj']);
     }
 }
