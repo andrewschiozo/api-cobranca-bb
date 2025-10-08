@@ -21,8 +21,8 @@ class CobrancaResponseParserTest extends TestCase
         $dadosInternos = $parser->parse($jsonSucesso);
 
         $this->assertIsArray($dadosInternos);
-        $this->assertArrayHasKey('id', $dadosInternos);
-        $this->assertEquals('999888777', $dadosInternos['id']);
+        $this->assertArrayHasKey('numero_cobranca', $dadosInternos);
+        $this->assertEquals('999888777', $dadosInternos['numero_cobranca']);
         $this->assertEquals('REGISTRADA', $dadosInternos['status']);
 
         $this->assertArrayNotHasKey('data_emissao', $dadosInternos, "O campo data_emissao deve ser mapeado ou ignorado, não exposto diretamente.");
