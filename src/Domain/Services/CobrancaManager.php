@@ -16,9 +16,11 @@ class CobrancaManager
      * Cria um novo Serviço de Cobranças.
      * 
      * @param \AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface $httpClient
+     * @param \AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter $cobrancaFormatter
      */
     public function __construct(
-        private HttpClientInterface $httpClient
+        private HttpClientInterface $httpClient,
+        private CobrancaFormatter $cobrancaFormatter
     ) { }
 
     /**
@@ -30,10 +32,15 @@ class CobrancaManager
      */
     public function emitirCobranca(array $cobrancaData): array
     {
-        $payload = $cobrancaData;
-
+        $payload = $this->cobrancaFormatter->format($cobrancaData);
         $uri = '/cobrancas/v2/boletos';
-        $responseJson = $this->httpClient->post($uri, $payload);
+
+        try{
+            $responseJson = $this->httpClient->post($uri, $payload);
+        } catch (HttpCommunicationException $e){
+            throw $e;
+        }
+        
         $responseData = json_decode($responseJson, true);
 
         return $responseData;
