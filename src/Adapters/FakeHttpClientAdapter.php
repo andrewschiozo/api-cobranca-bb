@@ -14,8 +14,8 @@ class FakeHttpClientAdapter implements HttpClientInterface
     /**
      * @var string Resposta JSON que será retornada por padrão.
      */
-    private string $defaultPostResponse = '{"numero_cobranca": "1234567890", "status": "REGISTRADA"}';
-    
+    private string $defaultPostResponse = '{"numero_cobranca": "1234567890", "valor": 100.50, "vencimento": "2025-10-30", "status": "REGISTRADA"}';
+
     /**
      * Permite configurar a resposta que o método POST deve retornar.
      */
