@@ -16,11 +16,13 @@ class CobrancaManager
      * Cria um novo Serviço de Cobranças.
      * 
      * @param \AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface $httpClient
-     * @param \AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter $cobrancaFormatter
+     * @param \AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter $formatter
+     * @param \AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaResponseParser $responseParser
      */
     public function __construct(
         private HttpClientInterface $httpClient,
-        private CobrancaFormatter $cobrancaFormatter
+        private CobrancaFormatter $formatter,
+        private CobrancaResponseParser $responseParser
     ) { }
 
     /**
@@ -32,7 +34,7 @@ class CobrancaManager
      */
     public function emitirCobranca(array $cobrancaData): array
     {
-        $payload = $this->cobrancaFormatter->format($cobrancaData);
+        $payload = $this->formatter->format($cobrancaData);
         $uri = '/cobrancas/v2/boletos';
 
         try{
@@ -41,8 +43,8 @@ class CobrancaManager
             throw $e;
         }
         
-        $responseData = json_decode($responseJson, true);
+        $response = $this->responseParser->parse($responseJson);
 
-        return $responseData;
+        return $response;
     }
 }
