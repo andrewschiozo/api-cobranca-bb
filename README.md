@@ -17,7 +17,7 @@ Projetada em **Arquitetura Hexagonal (Portas e Adaptadores)** para garantir que 
 ### 📦 Instalação
 
 ```bash
-composer andrewschiozo/bb-cobrancas-sdk
+Ainda em desenvolvimento 🤓
 ```
 
 ### Referências
