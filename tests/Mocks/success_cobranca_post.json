@@ -1,0 +1,28 @@
+{
+	"beneficiario": {
+		"agencia": 452,
+		"contaCorrente": 123873,
+		"tipoEndereco": 1,
+		"logradouro": "ST AUXILIAR DE GARAGENS RUA 9 LOTE 10",
+		"bairro": "TAGUATINGA NORTE",
+		"cidade": "BRASILIA",
+		"codigoCidade": 2000,
+		"uf": "DF",
+		"cep": 72145760,
+		"indicadorComprovacao": ""
+	},
+	"qrCode": {
+		"url": "qrcodepix-h.bb.com.br/pix/v2/cobv/d2bdfc2a-dc9c-403e-b432-1c50df0728b5",
+		"txId": "BOLETO31285570001129292DATA21102025",
+		"emv": "00020101021226920014br.gov.bcb.pix2570qrcodepix-h.bb.com.br/pix/v2/cobv/d2bdfc2a-dc9c-403e-b432-1c50df0728b55204000053039865406100.005802BR5919PADARIA PESSOA ROSA6008BRASILIA62070503***6304B40D"
+	},
+	"numero": "00031285570001129292",
+	"numeroCarteira": 17,
+	"numeroVariacaoCarteira": 35,
+	"codigoCliente": 3128557,
+	"linhaDigitavel": "00190000090312855700001129292171814380000010000",
+	"codigoBarraNumerico": "00198143800000100000000003128557000112929217",
+	"numeroContratoCobranca": 19581316,
+	"urlImagemBoleto": "https://boleto.apps.bb.com.br/segunda-via/00190000090312855700001129292171814380000010000/81676009000119/0",
+	"observacao": ""
+}

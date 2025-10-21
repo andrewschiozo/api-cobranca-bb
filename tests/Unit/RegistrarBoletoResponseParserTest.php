@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 
-class CobrancaResponseParserTest extends TestCase
+class RegistrarBoletoResponseParserTest extends TestCase
 {
     /**
      * Testa se o parser transforma o JSON da API no formato interno esperado.
      */
     public function testParseSucesso(): void
     {
-        $parser = new CobrancaResponseParser();
+        $parser = new RegistrarBoletoResponseParser();
         
         $jsonSucesso = '{"numero_cobranca": "999888777", "status": "REGISTRADA", "data_emissao": "2025-10-08"}';
         
@@ -35,7 +35,7 @@ class CobrancaResponseParserTest extends TestCase
     {
         $this->expectException(\JsonException::class);
         
-        $parser = new CobrancaResponseParser();
+        $parser = new RegistrarBoletoResponseParser();
 
         $jsonInvalido = '{"numero_cobranca": "999888777", '; 
         

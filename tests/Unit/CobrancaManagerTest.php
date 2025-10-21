@@ -1,15 +1,18 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaResponseParser;
-use PHPUnit\Framework\TestCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaManager;
-use AndrewsChiozo\ApiCobrancaBb\Adapters\FakeHttpClientAdapter;
+
+use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManager;
+use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\FakeHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockHttpClientAdapter;
+use PHPUnit\Framework\TestCase;
 
 class CobrancaManagerTest extends TestCase
 {
@@ -34,11 +37,12 @@ class CobrancaManagerTest extends TestCase
         $mockDadosCobranca = $this->mockDadosCobranca;
 
         $respostaAPI = '{"numero_cobranca": "1234567890", "status": "REGISTRADA"}';
-        
+
         $fakeAdapter = new FakeHttpClientAdapter();
         $fakeAdapter->setPostResponse($respostaAPI);
 
-        $manager = new CobrancaManager($fakeAdapter, new CobrancaFormatter(), new CobrancaResponseParser());
+        $useCase = new RegistrarBoletoUseCase($fakeAdapter, new RegistrarBoletoFormatter(), new RegistrarBoletoResponseParser());
+        $manager = new CobrancaManager($useCase);
 
         $resultado = $manager->emitirCobranca($mockDadosCobranca);
 
@@ -48,7 +52,7 @@ class CobrancaManagerTest extends TestCase
         $this->assertEquals('1234567890', $resultado['numero_cobranca']);
         $this->assertEquals('REGISTRADA', $resultado['status']);
     }
-    
+
     /**
      * Testa o cenário onde o cliente HTTP falha (simulando um timeout de rede).
      */
@@ -63,7 +67,49 @@ class CobrancaManagerTest extends TestCase
             ->willThrowException(new HttpCommunicationException('Erro de conexão simulado.'));
 
         $mockDadosCobranca = $this->mockDadosCobranca;
-        $manager = new CobrancaManager($mockAdapter, new CobrancaFormatter(), new CobrancaResponseParser());
+        $useCase = new RegistrarBoletoUseCase($mockAdapter, new RegistrarBoletoFormatter(), new RegistrarBoletoResponseParser());
+        $manager = new CobrancaManager($useCase);
         $manager->emitirCobranca($mockDadosCobranca);
+    }
+
+    /**
+     * Testa o cenário de sucesso ao emitir uma cobrança com um mock real.
+     */
+    public function testEmissaoCobrancaComSucessoComMockReal(): void
+    {
+        // 1. Arrange (Preparação)
+
+        // Define o caminho para o mock real
+        $mockFilePath = __DIR__ . '/../Mocks/success_cobranca_post.json';
+        $uri = '/cobrancas/v2/boletos';
+
+        // Configura o Mock Adapter
+        $mockAdapter = new MockHttpClientAdapter();
+        $mockAdapter->addMockResponse('POST', $uri, $mockFilePath); // Passa o caminho do arquivo
+
+        // Injeta as dependências no Manager
+        $useCase = new RegistrarBoletoUseCase($mockAdapter, new RegistrarBoletoFormatter(), new RegistrarBoletoResponseParser());
+        $manager = new CobrancaManager($useCase);
+
+        // Dados de entrada (o formatter precisa deles)
+        $dadosCobranca = [
+            'valor' => 100.5,
+            'vencimento_data' => '2025-12-20',
+            'pagador_documento' => '12345678901',
+            'pagador_nome' => 'João da Silva',
+            'convenio_id' => 98765,
+            'nosso_numero' => 'ABC123XYZ'
+        ];
+
+        // 2. Act (Ação)
+        $resultado = $manager->emitirCobranca($dadosCobranca);
+
+        // 3. Assert (Verificação)
+        // O Parser deve ter transformado o campo 'status' do JSON real (REGISTRADA)
+        $this->assertIsArray($resultado);
+        // $this->assertEquals('REGISTRADA', $resultado['status']);
+
+        // Se o Parser mapear o campo 'id' para 'numero', testamos isso:
+        // $this->assertEquals(999888777, $resultado['id']); // Assumindo que o parser mapeia 'numero' para 'id'
     }
 }

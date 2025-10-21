@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\CobrancaFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 
-class CobrancaFormatterTest extends TestCase
+class RegistrarBoletoFormatterTest extends TestCase
 {
     private array $mockDadosCobranca = [
         'valor' => 100.5,
@@ -25,7 +25,7 @@ class CobrancaFormatterTest extends TestCase
     {
 
         $mockDadosCobranca = $this->mockDadosCobranca;
-        $formatter = new CobrancaFormatter();
+        $formatter = new RegistrarBoletoFormatter();
         $payload = $formatter->format($mockDadosCobranca);
         
         $this->assertIsArray($payload);
