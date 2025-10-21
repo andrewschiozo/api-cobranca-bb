@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
 
+use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
+
 /**
  * Serviço responsável por receber a resposta JSON da API do BB e 
  * transformá-la em um formato de dados internos limpo e confiável.
  */
-class CobrancaResponseParser
+class RegistrarBoletoResponseParser implements ResponseParserInterface
 {
     /**
      * Transforma o JSON de resposta da API em um array de dados limpos.

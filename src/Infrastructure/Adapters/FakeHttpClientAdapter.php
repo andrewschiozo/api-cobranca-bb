@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Adapters;
+namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
 
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
 

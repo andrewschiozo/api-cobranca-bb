@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
 
+use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
+
 /**
  * Serviço responsável por formatar e validar os dados internos de uma Cobrança
  * no payload JSON exigido pela API do Banco do Brasil.
  */
-class CobrancaFormatter
+class RegistrarBoletoFormatter implements FormatterInterface
 {
     /**
      * Transforma os dados da Cobrança em um array compatível com o payload da API.
