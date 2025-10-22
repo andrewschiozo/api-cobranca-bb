@@ -31,7 +31,7 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
         $this->client = new GuzzleClient(['base_uri' => $this->baseUrl, 'verify' => false]);
     }
 
-    public function getAccessToken(): string
+    private function getAccessToken(): string
     {
         // Se o token já existe. //verificar depois se está expirado
         if ($this->accessToken) {
