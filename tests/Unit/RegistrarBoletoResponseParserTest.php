@@ -16,16 +16,18 @@ class RegistrarBoletoResponseParserTest extends TestCase
     {
         $parser = new RegistrarBoletoResponseParser();
         
-        $jsonSucesso = '{"numero_cobranca": "999888777", "status": "REGISTRADA", "data_emissao": "2025-10-08"}';
+        $mockFilePath = __DIR__ . '/../Mocks/registrar-boleto/response_registrar-boleto_success.json';
+        $jsonSucesso = file_get_contents($mockFilePath);
+        
         
         $dadosInternos = $parser->parse($jsonSucesso);
 
         $this->assertIsArray($dadosInternos);
-        $this->assertArrayHasKey('numero_cobranca', $dadosInternos);
-        $this->assertEquals('999888777', $dadosInternos['numero_cobranca']);
-        $this->assertEquals('REGISTRADA', $dadosInternos['status']);
+        $this->assertArrayHasKey('numero', $dadosInternos);
+        $this->assertEquals('00031285570001129292', $dadosInternos['numero']);
 
-        $this->assertArrayNotHasKey('data_emissao', $dadosInternos, "O campo data_emissao deve ser mapeado ou ignorado, não exposto diretamente.");
+        $this->assertArrayHasKey('linhaDigitavel', $dadosInternos);
+        $this->assertEquals('00190000090312855700001129292171814380000010000', $dadosInternos['linhaDigitavel']);
     }
     
     /**
