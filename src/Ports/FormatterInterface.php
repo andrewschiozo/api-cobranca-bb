@@ -12,8 +12,8 @@ interface FormatterInterface
     /**
      * Formata os dados para enviar para a API.
      * 
-     * @param array $data Dados a serem formatados
+     * @param DTOInterface $dto Dados a serem formatados
      * @return array Dados formatados
      */
-    public function format(array $data): array;
+    public function format(DTOInterface $dto): array;
 }
