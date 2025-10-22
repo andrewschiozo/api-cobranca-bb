@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Application;
 
-
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
-use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
 
 /**
- * Serviço de Domínio responsável por orquestrar a lógica de Cobranças.
+ * Serviço de Fachada responsável por orquestrar a lógica de Cobranças.
  */
-class CobrancaManager
+class CobrancaManagerFacade
 {
     /**
-     * Cria um novo Serviço de Cobranças.
+     * Cria um novo Serviço de Fachada de Cobranças.
      * 
      * @param \AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface $httpClient
      * @param \AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface $formatter
@@ -36,6 +33,7 @@ class CobrancaManager
      */
     public function emitirCobranca(array $cobrancaData): array
     {
-        return $this->registrarBoletoUseCase->execute($cobrancaData);
+        $dto = RegistrarBoletoRapidoDTO::fromArray($cobrancaData);
+        return $this->registrarBoletoUseCase->execute($dto);
     }
 }
