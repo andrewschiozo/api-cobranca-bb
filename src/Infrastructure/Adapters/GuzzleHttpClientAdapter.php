@@ -3,6 +3,7 @@ declare(strict_types= 1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
 
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
 use GuzzleHttp\Client as GuzzleClient;
@@ -18,14 +19,17 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
     private string $appKey;
     private ?string $accessToken = null; //adicionar cache futuramente
 
+    private ErrorResponseParser $errorParser;
 
-    public function __construct(array $options = [])
+
+    public function __construct(array $options, ErrorResponseParser $errorParser)
     {
         $this->baseUrl = $options['baseUrl'];
         $this->authUrl = $options['authUrl'];
         $this->clientId = $options['clientId'];
         $this->clientSecret = $options['clientSecret'];
         $this->appKey = $options['appKey'];
+        $this->errorParser = $errorParser;
         
         //ssl desabilitado p/ testes
         $this->client = new GuzzleClient(['base_uri' => $this->baseUrl, 'verify' => false]);
@@ -74,7 +78,13 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
             return $response->getBody()->getContents();
 
         } catch (RequestException $e) {
-            //Refinar futuramente com algum errorparser
+            $httpCode = $e->hasResponse() ? $e->getResponse()->getStatusCode() : 0;
+            $responseBody = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : '';
+
+            if ($responseBody) {
+                $this->errorParser->parse($httpCode, $responseBody);
+            }
+
             throw new HttpCommunicationException('Erro na requisição para a API do BB: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
