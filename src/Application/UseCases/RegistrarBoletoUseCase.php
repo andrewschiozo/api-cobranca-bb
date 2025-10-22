@@ -8,7 +8,6 @@ use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
-use InvalidArgumentException;
 
 class RegistrarBoletoUseCase
 {
