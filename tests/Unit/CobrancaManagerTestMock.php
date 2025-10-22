@@ -6,6 +6,7 @@ namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 
 use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManager;
+use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
@@ -36,7 +37,7 @@ class CobrancaManagerTestMock extends TestCase
 
         // CobrancaManager
         $useCase = new RegistrarBoletoUseCase($mockAdapter, new RegistrarBoletoFormatter(), new RegistrarBoletoResponseParser());
-        $manager = new CobrancaManager($useCase);
+        $manager = new CobrancaManagerFacade($useCase);
 
         // Dados de entrada
         $mockDadosCobranca = json_decode(file_get_contents($this->registrarBoletoRapidoFilePath), true);
@@ -69,7 +70,7 @@ class CobrancaManagerTestMock extends TestCase
             ->willThrowException(new HttpCommunicationException('Erro de conexão simulado.'));
 
         $useCase = new RegistrarBoletoUseCase($mockAdapter, new RegistrarBoletoFormatter(), new RegistrarBoletoResponseParser());
-        $manager = new CobrancaManager($useCase);
+        $manager = new CobrancaManagerFacade($useCase);
 
         $manager->emitirCobranca($mockDadosCobranca);
         
