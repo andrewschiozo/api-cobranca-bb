@@ -23,8 +23,17 @@ class RegistrarBoletoResponseParser implements ResponseParserInterface
         $data = json_decode($jsonResponse, true, 512, JSON_THROW_ON_ERROR);
 
         return [
-            'numero_cobranca' => $data['numero_cobranca'] ?? null,
-            'status' => $data['status'] ?? 'DESCONHECIDO',
+            'beneficiario' => $data['beneficiario'] ?? [],
+            'qrCode' => $data['qrCode'] ?? [],
+            'numero' => $data['numero'] ?? null,
+            'numeroCarteira' => $data['numeroCarteira'] ?? null,
+            'numeroVariacaoCarteira' => $data['numeroVariacaoCarteira'] ?? null,
+            'codigoCliente' => $data['codigoCliente'] ?? null,
+            'linhaDigitavel' => $data['linhaDigitavel'] ?? null,
+            'codigoBarraNumerico' => $data['codigoBarraNumerico'] ?? null,
+            'numeroContratoCobranca' => $data['numeroContratoCobranca'] ?? null,
+            'urlImagemBoleto' => $data['urlImagemBoleto'] ?? null,
+            'observacao' => $data['observacao'] ?? null
         ];
     }
 }
