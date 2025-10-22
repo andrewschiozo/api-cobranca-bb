@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
 
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Ports\DTOInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
 
 /**
@@ -16,18 +18,24 @@ class RegistrarBoletoFormatter implements FormatterInterface
      * * @param array $cobrancaData Dados internos (ex: ['valor' => 100.50, 'cliente' => '...'])
      * @return array Payload pronto para ser enviado via HTTP
      */
-    public function format(array $cobrancaData): array
+    public function format(DTOInterface $dto): array
     {
+        if( !$dto instanceof RegistrarBoletoRapidoDTO ) {
+            throw new \InvalidArgumentException('Tipo de dado inválido. Esperado: ' . RegistrarBoletoRapidoDTO::class);
+        }
+        
+        $numeroTituloCliente = "000" . $dto->numeroConvenio->numero . str_pad($dto->nossoNumero->nossoNumero, 10, '0', STR_PAD_LEFT);
+
         return [
-            'numeroConvenio' => $cobrancaData['convenio_id'] ?? 1234567, 
-            'numeroTituloCedente' => $cobrancaData['nosso_numero'] ?? uniqid(),
-            'valorNominalTitulo' => number_format($cobrancaData['valor'], 2, '.', ''),
-            'dataVencimento' => $cobrancaData['vencimento_data'],
-            'indicadorAceiteTituloVencido' => 'S',
-            'dadosPagador' => [
-                'cpfCnpj' => $cobrancaData['pagador_documento'],
-                'nome' => $cobrancaData['pagador_nome'],
-            ],
+            'numeroConvenio' => $dto->numeroConvenio->numero, 
+            'dataVencimento' => $dto->dataVencimento->format('d.m.Y'),
+            'valorOriginal' => $dto->valorTitulo->valor,
+            'numeroTituloCliente' => $numeroTituloCliente,
+            'pagador' => [
+                'tipoInscricao' => $dto->pagador->documento->tipo->value,
+                'numeroInscricao' => $dto->pagador->documento->valor,
+                'cep' => $dto->pagador->cep
+            ]
         ];
     }
 }
