@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DocumentoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DocumentoInvalidoException;
 
 class DocumentoVO
 {
@@ -24,7 +25,7 @@ class DocumentoVO
         }
 
         if(!$isCpf && !$isCnpj) {
-            throw new \InvalidArgumentException("O documento {$documento} deve ser um CPF ou CNPJ.");
+            throw new DocumentoInvalidoException("O documento {$documento} deve ser um CPF ou CNPJ.");
         }
 
         $this->valor = $documento;
