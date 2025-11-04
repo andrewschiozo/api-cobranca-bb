@@ -5,6 +5,7 @@ namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
 
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Adaptador de Mock que serve JSONs de arquivos pré-definidos.
@@ -32,7 +33,7 @@ class MockHttpClientAdapter implements HttpClientInterface
     /**
      * Retorna a resposta JSON configurada para o POST.
      */
-    public function post(string $uri, array $payload, array $headers = []): string
+    public function post(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string
     {
         $response = $this->mockResponses['POST'][$uri] ?? null;
 
@@ -45,7 +46,7 @@ class MockHttpClientAdapter implements HttpClientInterface
     /**
      * Retorna a resposta JSON configurada para o GET.
      */
-    public function get(string $uri, array $queryParams = [], array $headers = []): string
+    public function get(string $uri, array $queryParams = [], array $headers = [], ?LoggerInterface $requestLogger = null): string
     {
         $response = $this->mockResponses['GET'][$uri] ?? null;
 
