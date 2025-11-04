@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Application;
 
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\DetalharBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 
@@ -22,6 +24,7 @@ class CobrancaManagerFacade
      */
     public function __construct(
         private RegistrarBoletoUseCase $registrarBoletoUseCase,
+        private DetalharBoletoUseCase $detalharBoletoUseCase
     ) { }
 
     /**
@@ -35,5 +38,18 @@ class CobrancaManagerFacade
     {
         $dto = RegistrarBoletoRapidoDTO::fromArray($cobrancaData);
         return $this->registrarBoletoUseCase->execute($dto);
+    }
+
+    /**
+     * Detalha uma cobrança.
+     * 
+     * @param array $data Dados da cobrança a ser detalhada. Ex: ['nossoNumero' => '1234567890', 'numeroConvenio' => '12345']
+     * @return array
+     * @throws HttpCommunicationException
+     */
+    public function detalharCobranca(array $data): array
+    {
+        $dto = DetalharBoletoDTO::fromArray($data);
+        return $this->detalharBoletoUseCase->execute($dto);
     }
 }
