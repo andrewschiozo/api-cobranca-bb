@@ -4,3 +4,7 @@ composer.phar
 composer.lock
 .env
 .phpunit.cache
+
+# Arquivos de logs
+logs/*
+!logs/.gitkeep
