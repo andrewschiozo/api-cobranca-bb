@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Ports;
 
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Interface que define o contrato para comunicação HTTP com APIs externas.
@@ -17,7 +18,7 @@ interface HttpClientInterface
      * @return string O corpo da resposta da API (JSON puro)
      * @throws HttpCommunicationException Se houver falha de conexão, timeout, ou erro 5xx/4xx.
      */
-    public function post(string $uri, array $payload, array $headers = []): string;
+    public function post(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string;
     
     /**
      * @param string $uri A URI relativa da API do BB (ex: /cobrancas/v2/boletos/12345)
@@ -26,5 +27,5 @@ interface HttpClientInterface
      * @return string O corpo da resposta da API (JSON puro)
      * @throws HttpCommunicationException Se houver falha de conexão, timeout, ou erro 5xx/4xx.
      */
-    public function get(string $uri, array $queryParams = [], array $headers = []): string;
+    public function get(string $uri, array $queryParams = [], array $headers = [], ?LoggerInterface $requestLogger = null): string;
 }
