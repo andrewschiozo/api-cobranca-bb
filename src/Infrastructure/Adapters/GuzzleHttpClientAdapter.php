@@ -8,6 +8,7 @@ use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Log\LoggerInterface;
 
 class GuzzleHttpClientAdapter implements HttpClientInterface
 {
@@ -21,15 +22,18 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
 
     private ErrorResponseParser $errorParser;
 
+    private LoggerInterface $logger;
 
-    public function __construct(array $options, ErrorResponseParser $errorParser)
+    public function __construct(array $options, ErrorResponseParser $errorParser, LoggerInterface $logger)
     {
         $this->baseUrl = $options['baseUrl'];
         $this->authUrl = $options['authUrl'];
         $this->clientId = $options['clientId'];
         $this->clientSecret = $options['clientSecret'];
         $this->appKey = $options['appKey'];
+
         $this->errorParser = $errorParser;
+        $this->logger = $logger;
         
         //ssl desabilitado p/ testes
         $this->client = new GuzzleClient(['base_uri' => $this->baseUrl, 'verify' => false]);
@@ -43,7 +47,6 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
         }
 
         try {
-            //Autenticação c/ oauth
             $response = $this->client->request('POST', $this->authUrl, [
                 'headers' => [
                     'Authorization' => 'Basic ' . base64_encode($this->clientId . ':' . $this->clientSecret),
@@ -57,16 +60,25 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
 
             $data = json_decode($response->getBody()->getContents(), true);
             $this->accessToken = $data['access_token'];
-            
+
+            $this->logger->info('API BB: Token obtido com sucesso.');
+
             return $this->accessToken;
 
         } catch (RequestException $e) {
+            $this->logger->critical('API BB: Falha ao obter token.', ['exception' => $e->getMessage()]);
             throw new HttpCommunicationException('Falha na autenticação com o Banco do Brasil: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 
     private function sendRequest(string $method, string $uri, array $options): string
     {
+        $this->logger->debug("API BB: {$method} -> {$uri}.", [
+            'method' => $method,
+            'uri' => $uri,
+            'options' => $options
+        ]);
+
         try {
             $token = $this->getAccessToken();
             
@@ -75,11 +87,25 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
 
             $response = $this->client->request($method, $uri, $options);
 
-            return $response->getBody()->getContents();
+            $responseBody = $response->getBody()->getContents();
+
+            $this->logger->info("API BB: Resposta {$method} {$uri} recebida com sucesso.", [
+                'status' => $response->getStatusCode(),
+                'response_snippet' => substr($responseBody, 0, 500) // Loga apenas um trecho da resposta
+            ]);
+
+            return $responseBody;
 
         } catch (RequestException $e) {
             $httpCode = $e->hasResponse() ? $e->getResponse()->getStatusCode() : 0;
             $responseBody = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : '';
+
+            $this->logger->error('API BB: Falha na requisição.', [
+                'method' => $method,
+                'uri' => $uri,
+                'error' => $e->getMessage(),
+                'response' => $responseBody
+            ]);
 
             if ($responseBody) {
                 $this->errorParser->parse($httpCode, $responseBody);
