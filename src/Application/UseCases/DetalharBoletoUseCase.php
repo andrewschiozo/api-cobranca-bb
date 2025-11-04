@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
@@ -13,7 +14,6 @@ class DetalharBoletoUseCase
  
     public function __construct(
         private HttpClientInterface $httpClient,
-        // private FormatterInterface $formatter,
         private ResponseParserInterface $responseParser
     )
     { }
@@ -24,8 +24,8 @@ class DetalharBoletoUseCase
      */
     public function execute(DetalharBoletoDTO $dto): array
     {
-        $nossoNumero = "000" . $dto->numeroConvenio->numero . str_pad($dto->nossoNumero->nossoNumero, 10, '0', STR_PAD_LEFT);
-        $uri = "/cobrancas/v2/boletos/{$nossoNumero}";
+        $nossoNumeroFormatado = IdentificadorBoleto::create($dto->numeroConvenio, $dto->nossoNumero)->identificadorCompleto;
+        $uri = "/cobrancas/v2/boletos/{$nossoNumeroFormatado}";
         
         $queryParams = [
             'numeroConvenio' => $dto->numeroConvenio->numero,

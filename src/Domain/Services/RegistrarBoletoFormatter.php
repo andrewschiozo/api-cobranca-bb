@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Ports\DTOInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
 
@@ -23,8 +24,8 @@ class RegistrarBoletoFormatter implements FormatterInterface
         if( !$dto instanceof RegistrarBoletoRapidoDTO ) {
             throw new \InvalidArgumentException('Tipo de dado inválido. Esperado: ' . RegistrarBoletoRapidoDTO::class);
         }
-        
-        $numeroTituloCliente = "000" . $dto->numeroConvenio->numero . str_pad($dto->nossoNumero->nossoNumero, 10, '0', STR_PAD_LEFT);
+
+        $numeroTituloCliente = IdentificadorBoleto::create($dto->numeroConvenio, $dto->nossoNumero)->identificadorCompleto;
 
         return [
             'numeroConvenio' => $dto->numeroConvenio->numero, 
