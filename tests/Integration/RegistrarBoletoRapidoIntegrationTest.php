@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\DetalharBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\DetalharBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockTokenStorageAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -26,14 +25,14 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
      */
     public function testSandboxComSucesso(): void
     {
-        // Guzzle Adapter
         $httpAdapter = new GuzzleHttpClientAdapter([
             'baseUrl' => $_ENV['BB_COBRANCA_URL_BASE'],
             'authUrl' => $_ENV['BB_COBRANCA_URL_AUTH'],
             'clientId' => $_ENV['BB_COBRANCA_CLIENT_ID'],
             'clientSecret' => $_ENV['BB_COBRANCA_CLIENT_SECRET'],
             'appKey' => $_ENV['BB_COBRANCA_APP_KEY']
-        ], new ErrorResponseParser());
+        ], new ErrorResponseParser(),
+    new MockTokenStorageAdapter());
 
         $useCase = new RegistrarBoletoUseCase(
             $httpAdapter,
@@ -76,14 +75,13 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
         $this->expectException(BBApiException::class);
         $this->expectExceptionMessage('Nosso Número já incluído anteriormente.');
 
-        // Guzzle Adapter
         $httpAdapter = new GuzzleHttpClientAdapter([
             'baseUrl' => $_ENV['BB_COBRANCA_URL_BASE'],
             'authUrl' => $_ENV['BB_COBRANCA_URL_AUTH'],
             'clientId' => $_ENV['BB_COBRANCA_CLIENT_ID'],
             'clientSecret' => $_ENV['BB_COBRANCA_CLIENT_SECRET'],
             'appKey' => $_ENV['BB_COBRANCA_APP_KEY']
-        ], new ErrorResponseParser());
+        ], new ErrorResponseParser(), new MockTokenStorageAdapter());
 
         $dadosCobranca = [
             "numeroConvenio" => "3128557",
@@ -112,15 +110,14 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
     public function testSandboxLancarExcecaoEmCasoDeFalhaHTTP(): void
     {
         $this->expectException(HttpCommunicationException::class);
-        
-        // Guzzle Adapter
+
         $httpAdapter = new GuzzleHttpClientAdapter([
             'baseUrl' => $_ENV['BB_COBRANCA_URL_BASE'],
             'authUrl' => $_ENV['BB_COBRANCA_URL_AUTH'] . '/v3',
             'clientId' => $_ENV['BB_COBRANCA_CLIENT_ID'],
             'clientSecret' => $_ENV['BB_COBRANCA_CLIENT_SECRET'],
             'appKey' => $_ENV['BB_COBRANCA_APP_KEY']
-        ], new ErrorResponseParser());
+        ], new ErrorResponseParser(), new MockTokenStorageAdapter());
 
         $useCase = new RegistrarBoletoUseCase(
             $httpAdapter,

@@ -5,28 +5,31 @@ namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
-use GuzzleHttp\Client as GuzzleClient;
+use AndrewsChiozo\ApiCobrancaBb\Ports\TokenStorageInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 class GuzzleHttpClientAdapter implements HttpClientInterface
 {
-    private GuzzleClient $client;
+    private ClientInterface $client;
     private string $baseUrl;
     private string $authUrl;
     private string $clientId;
     private string $clientSecret;
     private string $appKey;
-    private ?string $accessToken = null; //adicionar cache futuramente
 
     private ErrorResponseParser $errorParser;
+    private TokenStorageInterface $tokenStorage;
 
-    private LoggerInterface $logger;
-
-    public function __construct(array $options, ErrorResponseParser $errorParser, ?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        array $options,
+        ErrorResponseParser $errorParser,
+        TokenStorageInterface $tokenStorage,
+        ?ClientInterface $client = null,
+    ) {
         $this->baseUrl = $options['baseUrl'];
         $this->authUrl = $options['authUrl'];
         $this->clientId = $options['clientId'];
@@ -34,18 +37,18 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
         $this->appKey = $options['appKey'];
 
         $this->errorParser = $errorParser;
-        $this->logger = $logger ?? new NullLogger();
+        $this->tokenStorage = $tokenStorage;
         
         //ssl desabilitado p/ testes
-        $this->client = new GuzzleClient(['base_uri' => $this->baseUrl, 'verify' => false]);
+        $this->client = $client ?? new Client(['base_uri' => $this->baseUrl, 'verify' => false]);
     }
 
-    private function getAccessToken(?LoggerInterface $logger = null): ?string
+    private function getAccessToken(LoggerInterface $logger): ?string
     {
-        $logger = $logger ?? $this->logger;
-        // Se o token já existe. //verificar depois se está expirado
-        if ($this->accessToken) {
-            return $this->accessToken;
+        $cachedToken = $this->tokenStorage->getToken();
+        if (null !== $cachedToken) {
+            $logger->info('Token obtido do cache');
+            return $cachedToken;
         }
 
         try {
@@ -61,11 +64,13 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
-            $this->accessToken = $data['access_token'];
+            $accessToken = $data['access_token'];
+            $expiresIn = $data['expires_in'];
+            $this->tokenStorage->saveToken($accessToken, $expiresIn);
 
-            $logger->info('API BB: Token obtido com sucesso.');
+            $logger->info('API BB: Token obtido da autenticação.');
 
-            return $this->accessToken;
+            return $accessToken;
 
         } catch (RequestException $e) {
             $logger->critical('API BB: Falha ao obter token.', ['exception' => $e->getMessage()]);
@@ -75,16 +80,14 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
 
     private function sendRequest(string $method, string $uri, array $options, LoggerInterface $requestLogger): string
     {
-        $logger = $requestLogger ?? $this->logger;
-
-        $logger->debug("API BB: {$method} -> {$uri}.", [
+        $requestLogger->debug("API BB: {$method} -> {$uri}.", [
             'method' => $method,
             'uri' => $uri,
             'options' => $options
         ]);
 
         try {            
-            $token = $this->accessToken ?? $this->getAccessToken($requestLogger);
+            $token = $this->getAccessToken($requestLogger);
 
             $options['headers']['Authorization'] = 'Bearer ' . $token;
             $options['headers']['X-Application-Key'] = $this->appKey;
@@ -93,7 +96,7 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
 
             $responseBody = $response->getBody()->getContents();
 
-            $logger->info("API BB: Resposta {$method} {$uri} recebida com sucesso.", [
+            $requestLogger->info("API BB: Resposta {$method} {$uri} recebida com sucesso.", [
                 'status' => $response->getStatusCode(),
                 'response_snippet' => substr($responseBody, 0, 500) // Loga apenas um trecho da resposta
             ]);
@@ -104,7 +107,7 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
             $httpCode = $e->hasResponse() ? $e->getResponse()->getStatusCode() : 0;
             $responseBody = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : '';
 
-            $logger->error('API BB: Falha na requisição.', [
+            $requestLogger->error('API BB: Falha na requisição.', [
                 'method' => $method,
                 'uri' => $uri,
                 'error' => $e->getMessage(),

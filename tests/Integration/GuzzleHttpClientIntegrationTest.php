@@ -5,13 +5,13 @@ namespace Andrewschiozo\ApiCobrancaBb\Tests\Integration;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockTokenStorageAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\BufferedLoggerInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 
 /**
  * Testa a comunicação real (HTTP) com a API do Banco do Brasil (Sandbox).
@@ -35,7 +35,7 @@ class GuzzleHttpClientIntegrationTest extends TestCase
         }
 
         $errorParser = new ErrorResponseParser();
-        $nullLogger = new NullLogger(); // Logger de fallback
+        $mockTokenStorage = new MockTokenStorageAdapter();
         $this->loggerFactory = new LoggerFactory(__DIR__ . '/../logs'); 
 
         $this->adapter = new GuzzleHttpClientAdapter([
@@ -45,7 +45,7 @@ class GuzzleHttpClientIntegrationTest extends TestCase
             'clientSecret' => $clientSecret,
             'appKey' => $apiKey],
             $errorParser,
-            $nullLogger
+            $mockTokenStorage,
         );
     }
     
