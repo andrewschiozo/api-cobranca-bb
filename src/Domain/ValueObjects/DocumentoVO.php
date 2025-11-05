@@ -39,7 +39,7 @@ class DocumentoVO
      */
     public static function limparCpfCnpj(string $documento): string
     {
-        return trim(strtoupper(preg_replace('/[^a-zA-Z0-9]/', '', $documento)));
+        return trim(strtoupper(preg_replace('/[^0-9]/i', '', $documento)));
     }
 
     /**
