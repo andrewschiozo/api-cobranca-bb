@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
  * Logger que armazena mensagens em um buffer (array) na memória e só as escreve
  * para o logger final (Logger de destino) quando o método 'flush()' é chamado.
  */
-class BufferedLogger extends AbstractLogger
+class BufferedLogger extends AbstractLogger implements BufferedLoggerInterface
 {
     private LoggerInterface $logger;
     private array $buffer = [];
