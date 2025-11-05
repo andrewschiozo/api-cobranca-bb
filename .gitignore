@@ -8,3 +8,5 @@ composer.lock
 # Arquivos de logs
 logs/*
 !logs/.gitkeep
+tests/logs/*
+!tests/logs/.gitkeep
