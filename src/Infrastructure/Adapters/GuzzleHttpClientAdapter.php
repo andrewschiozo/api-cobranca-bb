@@ -137,4 +137,12 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
             'headers' => $headers
         ], $requestLogger);
     }
+
+    public function put(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string
+    {
+        return $this->sendRequest('PUT', $uri, [
+            'json' => $payload,
+            'headers' => $headers
+        ], $requestLogger);
+    }
 }
