@@ -28,4 +28,12 @@ interface HttpClientInterface
      * @throws HttpCommunicationException Se houver falha de conexão, timeout, ou erro 5xx/4xx.
      */
     public function get(string $uri, array $queryParams = [], array $headers = [], ?LoggerInterface $requestLogger = null): string;
+
+    /**
+     * @param string $uri Endpoint do recurso
+     * @param array $payload Corpo da requisição (JSON)
+     * @param array $headers
+     * @param LoggerInterface|null $requestLogger
+     */
+    public function put(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string;
 }
