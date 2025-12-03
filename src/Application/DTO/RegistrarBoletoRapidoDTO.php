@@ -22,6 +22,14 @@ class RegistrarBoletoRapidoDTO implements DTOInterface
         public readonly PagadorVO $pagador
     ) {}
 
+    /**
+     * 
+     * @param array $data
+     * [
+     *  
+     * ]
+     * @return RegistrarBoletoRapidoDTO
+     */
     public static function fromArray(array $data): RegistrarBoletoRapidoDTO
     {
         try{            
@@ -32,16 +40,15 @@ class RegistrarBoletoRapidoDTO implements DTOInterface
             $valorTitulo = new ValorTituloVO($data['valorTitulo']);
             $nossoNumero = new NossoNumeroVO($data['nossoNumero']);
             $pagador = new PagadorVO(
-                documento: new DocumentoVO($data['pagador']['numeroDocumento']),
-                nome: $data['pagador']['nome'] ?? null,
-                endereco: $data['pagador']['endereco'] ?? null,
-                cep: $data['pagador']['cep'],
-                cidade: $data['pagador']['cidade'] ?? null,
-                bairro: $data['pagador']['bairro'] ?? null,
-                uf: $data['pagador']['uf'] ?? null,
-                telefone: $data['pagador']['telefone'] ?? null,
-                email: $data['pagador']['email'] ?? null,
-                
+                documento: new DocumentoVO($data['pagadorNumeroDocumento']),
+                nome: $data['pagadorNome'] ?? null,
+                endereco: $data['pagadorEndereco'] ?? null,
+                cep: $data['pagadorCep'],
+                cidade: $data['pagadorCidade'] ?? null,
+                bairro: $data['pagadorBairro'] ?? null,
+                uf: $data['pagadorUf'] ?? null,
+                telefone: $data['pagadorTelefone'] ?? null,
+                email: $data['pagadorEmail'] ?? null,
             );
 
             return new self(
@@ -58,17 +65,9 @@ class RegistrarBoletoRapidoDTO implements DTOInterface
 
     private static function validarInput(array $data): void
     {
-        $indicesObrigatorios = ['numeroConvenio', 'dataVencimento', 'valorTitulo', 'nossoNumero', 'pagador.numeroDocumento', 'pagador.cep'];
+        $indicesObrigatorios = ['numeroConvenio', 'dataVencimento', 'valorTitulo', 'nossoNumero', 'pagadorNumeroDocumento', 'pagadorCep'];
     
         foreach($indicesObrigatorios as $indice){
-            if(str_contains($indice, '.')) {
-                $indice = explode('.', $indice);
-                if(!isset($data[$indice[0]]) || !isset($data[$indice[0]][$indice[1]])) {
-                    throw new InvalidArgumentException("O campo {$indice[0]}[{$indice[1]}] é obrigatório.");
-                }
-                continue;
-            }
-
             if(!isset($data[$indice])){
                 throw new InvalidArgumentException("O campo {$indice} é obrigatório.");
             }

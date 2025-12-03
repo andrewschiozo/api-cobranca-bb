@@ -26,7 +26,7 @@ class RegistrarBoletoFormatterTest extends TestCase
 
         // Verifica se devolveu o nosso número igual ao nosso número enviado
         $this->assertArrayHasKey('pagador', $payload);
-        $this->assertEquals($mockDadosCobranca['pagador']['numeroDocumento'], $payload['pagador']['numeroInscricao']);
+        $this->assertEquals($mockDadosCobranca['pagadorNumeroDocumento'], $payload['pagador']['numeroInscricao']);
 
         //Regra do BB 000 + numero convenio + nosso numero (10 dígitos, com zeros a esquerda)
         $expectedNossoNumero = '000' . $mockDadosCobranca['numeroConvenio'] . str_pad($mockDadosCobranca['nossoNumero'], 10, '0', STR_PAD_LEFT);
