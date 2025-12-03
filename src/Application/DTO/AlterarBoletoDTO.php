@@ -11,7 +11,7 @@ use AndrewsChiozo\ApiCobrancaBb\Ports\DTOInterface;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-class AtualizarBoletoDTO implements DTOInterface
+class AlterarBoletoDTO implements DTOInterface
 {
     public function __construct(
         public readonly NumeroConvenioVO $numeroConvenio,
@@ -29,9 +29,9 @@ class AtualizarBoletoDTO implements DTOInterface
      *      'novaDataVencimento: '2026-12-03',
      *      'novoValorTitulo: 123.45
      * ]
-     * @return AtualizarBoletoDTO
+     * @return AlterarBoletoDTO
      */
-    public static function fromArray(array $data): AtualizarBoletoDTO
+    public static function fromArray(array $data): AlterarBoletoDTO
     {
         try{            
             self::validarInput($data);
