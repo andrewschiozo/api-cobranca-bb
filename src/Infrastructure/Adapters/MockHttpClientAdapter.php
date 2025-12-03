@@ -44,6 +44,32 @@ class MockHttpClientAdapter implements HttpClientInterface
     }
 
     /**
+     * Retorna a resposta JSON configurada para o PUT.
+     */
+    public function put(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string
+    {
+        $response = $this->mockResponses['PUT'][$uri] ?? null;
+
+        if ($response === null) {
+            throw new HttpCommunicationException("Mock PUT não configurado para URI: $uri");
+        }
+        return $response;
+    }
+
+    /**
+     * Retorna a resposta JSON configurada para o PATCH.
+     */
+    public function patch(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string
+    {
+        $response = $this->mockResponses['PATCH'][$uri] ?? null;
+
+        if ($response === null) {
+            throw new HttpCommunicationException("Mock PATCH não configurado para URI: $uri");
+        }
+        return $response;
+    }
+
+    /**
      * Retorna a resposta JSON configurada para o GET.
      */
     public function get(string $uri, array $queryParams = [], array $headers = [], ?LoggerInterface $requestLogger = null): string
