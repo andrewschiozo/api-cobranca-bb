@@ -145,4 +145,12 @@ class GuzzleHttpClientAdapter implements HttpClientInterface
             'headers' => $headers
         ], $requestLogger);
     }
+
+    public function patch(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string
+    {
+        return $this->sendRequest('PATCH', $uri, [
+            'json' => $payload,
+            'headers' => $headers
+        ], $requestLogger);
+    }
 }

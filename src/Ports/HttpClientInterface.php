@@ -36,4 +36,12 @@ interface HttpClientInterface
      * @param LoggerInterface|null $requestLogger
      */
     public function put(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string;
+
+    /**
+     * @param string $uri Endpoint do recurso
+     * @param array $payload Corpo da requisição (JSON)
+     * @param array $headers
+     * @param LoggerInterface|null $requestLogger
+     */
+    public function patch(string $uri, array $payload, array $headers = [], ?LoggerInterface $requestLogger = null): string;
 }
