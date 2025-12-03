@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Application;
 
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AlterarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\DetalharBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
@@ -24,7 +26,8 @@ class CobrancaManagerFacade
      */
     public function __construct(
         private RegistrarBoletoUseCase $registrarBoletoUseCase,
-        private DetalharBoletoUseCase $detalharBoletoUseCase
+        private DetalharBoletoUseCase $detalharBoletoUseCase,
+        private AlterarBoletoUseCase $alterarBoletoUseCase
     ) { }
 
     /**
@@ -51,5 +54,18 @@ class CobrancaManagerFacade
     {
         $dto = DetalharBoletoDTO::fromArray($data);
         return $this->detalharBoletoUseCase->execute($dto);
+    }
+
+    /**
+     * Altera uma cobrança.
+     * 
+     * @param array $data Dados da cobrança a ser alterada.
+     * @return array
+     * @throws HttpCommunicationException
+     */
+    public function alterarCobranca(array $data): array
+    {
+        $dto = AlterarBoletoDTO::fromArray($data);
+        return $this->alterarBoletoUseCase->execute($dto);
     }
 }

@@ -16,8 +16,8 @@ class AlterarBoletoDTO implements DTOInterface
     public function __construct(
         public readonly NumeroConvenioVO $numeroConvenio,
         public readonly IdentificadorBoleto $numeroBoleto,
-        public readonly DateTimeImmutable $novaDataVencimento,
-        public readonly ValorTituloVO $novoValorTitulo,
+        public readonly ?DateTimeImmutable $novaDataVencimento,
+        public readonly ?ValorTituloVO $novoValorTitulo,
     ) {}
 
     /**
@@ -38,9 +38,10 @@ class AlterarBoletoDTO implements DTOInterface
 
             $numeroConvenio = new NumeroConvenioVO($data['numeroConvenio']);
             $nossoNumero = new NossoNumeroVO($data['nossoNumero']);
-            $numeroBoleto = IdentificadorBoleto::create($numeroConvenio, $nossoNumero);
-            $novaDataVencimento = new DateTimeImmutable($data['novaDataVencimento']);
-            $novoValorTitulo = new ValorTituloVO($data['novoValorTitulo']);
+            $numeroBoleto = new IdentificadorBoleto($numeroConvenio, $nossoNumero);
+
+            $novaDataVencimento = isset($data['novaDataVencimento']) ? new DateTimeImmutable($data['novaDataVencimento']) : null;
+            $novoValorTitulo = isset($data['novoValorTitulo']) ? new ValorTituloVO($data['novoValorTitulo']) : null;
             
 
             return new self(
@@ -56,8 +57,8 @@ class AlterarBoletoDTO implements DTOInterface
 
     private static function validarInput(array $data): void
     {
-        $indicesObrigatorios = ['numeroConvenio', 'nossoNumero', 'novaDataVencimento', 'novoValorTitulo'];
-    
+        $indicesObrigatorios = ['numeroConvenio', 'nossoNumero'];
+        $qtdCamposMinimos = 3;
         foreach($indicesObrigatorios as $indice){
             if(str_contains($indice, '.')) {
                 $indice = explode('.', $indice);
@@ -70,6 +71,10 @@ class AlterarBoletoDTO implements DTOInterface
             if(!isset($data[$indice])){
                 throw new InvalidArgumentException("O campo {$indice} é obrigatório.");
             }
+        }
+
+        if(count($data) < $qtdCamposMinimos) {
+            throw new InvalidArgumentException("Nenhuma alteração informada.");
         }
     }
 
