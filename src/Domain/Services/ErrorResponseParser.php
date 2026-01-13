@@ -23,7 +23,8 @@ class ErrorResponseParser
             throw new BBApiException("Erro de comunicação: Resposta da API não é um JSON válido.", $httpCode, ['raw_response' => $errorJson]);
         }
 
-        if(!isset($data['erros']) && !isset($data['error'])) {
+        if(!isset($data['erros']) && !isset($data['error']) && !isset($data['errors'])) {
+            print_r($data);
             throw new BBApiException('Não há um tratamento para o erro retornado pela API.', $httpCode, [ 'json' => $errorJson ]);
         }
 
@@ -35,6 +36,12 @@ class ErrorResponseParser
         }
         if(isset($data["error"])) {
             $mensagemDetalhada .= $data["error"] . ": " . $data["message"];
+        }
+
+        if(isset($data['errors'])) {
+            foreach($data['errors'] as $erro) {
+                $mensagemDetalhada .= $erro['message'] . "\n";
+            }
         }
 
         throw new BBApiException($mensagemDetalhada, $httpCode, $data);
