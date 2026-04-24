@@ -20,9 +20,9 @@ class CobrancaManagerFacade
     /**
      * Cria um novo Serviço de Fachada de Cobranças.
      * 
-     * @param \AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface $httpClient
-     * @param \AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface $formatter
-     * @param \AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface $responseParser
+     * @param RegistrarBoletoUseCase $registrarBoletoUseCase
+     * @param DetalharBoletoUseCase $detalharBoletoUseCase
+     * @param AlterarBoletoUseCase $alterarBoletoUseCase
      */
     public function __construct(
         private RegistrarBoletoUseCase $registrarBoletoUseCase,
@@ -33,39 +33,36 @@ class CobrancaManagerFacade
     /**
      * Envia os dados para a API do BB e registra uma nova cobrança.
      * 
-     * @param array $cobrancaData Dados da cobrança
+     * @param RegistrarBoletoRapidoDTO $dto Dados da cobrança
      * @return array Retorna os dados da Cobrança criada
      * @throws HttpCommunicationException Se houver falha na comunicação.
      */
-    public function emitirCobranca(array $cobrancaData): array
+    public function emitirCobrancaRapida(RegistrarBoletoRapidoDTO $dto): array
     {
-        $dto = RegistrarBoletoRapidoDTO::fromArray($cobrancaData);
         return $this->registrarBoletoUseCase->execute($dto);
     }
 
     /**
      * Detalha uma cobrança.
      * 
-     * @param array $data Dados da cobrança a ser detalhada. Ex: ['nossoNumero' => '1234567890', 'numeroConvenio' => '12345']
+     * @param DetalharBoletoDTO $dto
      * @return array
      * @throws HttpCommunicationException
      */
-    public function detalharCobranca(array $data): array
+    public function detalharCobranca(DetalharBoletoDTO $dto): array
     {
-        $dto = DetalharBoletoDTO::fromArray($data);
         return $this->detalharBoletoUseCase->execute($dto);
     }
 
     /**
      * Altera uma cobrança.
      * 
-     * @param array $data Dados da cobrança a ser alterada.
+     * @param AlterarBoletoDTO $dto Dados da cobrança a ser alterada.
      * @return array
      * @throws HttpCommunicationException
      */
-    public function alterarCobranca(array $data): array
+    public function alterarCobranca(AlterarBoletoDTO $dto): array
     {
-        $dto = AlterarBoletoDTO::fromArray($data);
         return $this->alterarBoletoUseCase->execute($dto);
     }
 }
