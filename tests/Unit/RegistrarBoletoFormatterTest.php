@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use PHPUnit\Framework\TestCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 
@@ -20,7 +20,7 @@ class RegistrarBoletoFormatterTest extends TestCase
         $mockDadosCobranca = json_decode(file_get_contents($mockFilePath), true);
 
         $formatter = new RegistrarBoletoFormatter();
-        $payload = $formatter->format(RegistrarBoletoRapidoDTO::fromArray($mockDadosCobranca));
+        $payload = $formatter->format(RegistrarBoletoDTO::fromArray($mockDadosCobranca));
         
         $this->assertIsArray($payload);
 

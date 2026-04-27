@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
@@ -55,7 +55,7 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
         ];
 
         // Emitir cobranca
-        $response = $useCase->execute(RegistrarBoletoRapidoDTO::fromArray($dadosCobranca));
+        $response = $useCase->execute(RegistrarBoletoDTO::fromArray($dadosCobranca));
         // Verificações
         $this->assertIsArray($response);
         $this->assertArrayHasKey('numero', $response);
@@ -101,7 +101,7 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             new LoggerFactory('/logs')
         );
 
-        $useCase->execute(RegistrarBoletoRapidoDTO::fromArray($dadosCobranca));
+        $useCase->execute(RegistrarBoletoDTO::fromArray($dadosCobranca));
     }
 
     /**
@@ -138,6 +138,6 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             ]
         ];
 
-        $useCase->execute(RegistrarBoletoRapidoDTO::fromArray($dadosCobranca));
+        $useCase->execute(RegistrarBoletoDTO::fromArray($dadosCobranca));
     }
 }

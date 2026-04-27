@@ -6,7 +6,7 @@ namespace AndrewsChiozo\ApiCobrancaBb\Application;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AlterarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\DetalharBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
@@ -33,11 +33,11 @@ class CobrancaManagerFacade
     /**
      * Envia os dados para a API do BB e registra uma nova cobrança.
      * 
-     * @param RegistrarBoletoRapidoDTO $dto Dados da cobrança
+     * @param RegistrarBoletoDTO $dto Dados da cobrança
      * @return array Retorna os dados da Cobrança criada
      * @throws HttpCommunicationException Se houver falha na comunicação.
      */
-    public function emitirCobrancaRapida(RegistrarBoletoRapidoDTO $dto): array
+    public function registrarCobranca(RegistrarBoletoDTO $dto): array
     {
         return $this->registrarBoletoUseCase->execute($dto);
     }

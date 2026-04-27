@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
@@ -49,7 +49,7 @@ class RegistrarBoletoRapidoTest extends TestCase
         $mockDadosCobranca = json_decode(file_get_contents($this->registrarBoletoRapidoFilePath), true);
 
         // Emitir cobranca
-        $resultado = $useCase->execute(RegistrarBoletoRapidoDTO::fromArray($mockDadosCobranca));
+        $resultado = $useCase->execute(RegistrarBoletoDTO::fromArray($mockDadosCobranca));
 
         // Verificações
         $this->assertIsArray($resultado);
@@ -84,6 +84,6 @@ class RegistrarBoletoRapidoTest extends TestCase
             $mockFactory
         );
 
-        $useCase->execute(RegistrarBoletoRapidoDTO::fromArray($mockDadosCobranca));
+        $useCase->execute(RegistrarBoletoDTO::fromArray($mockDadosCobranca));
     }
 }

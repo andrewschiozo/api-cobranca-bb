@@ -3,7 +3,7 @@ declare(strict_types= 1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
@@ -24,12 +24,12 @@ class RegistrarBoletoUseCase
     /**
      * Envia os dados para a API do BB e registra uma nova cobrança.
      * 
-     * @param RegistrarBoletoRapidoDTO $cobrancaData Dados da cobrança
+     * @param RegistrarBoletoDTO $cobrancaData Dados da cobrança
      * @return array Retorna os dados da Cobrança criada
      * 
      * @throws HttpCommunicationException Se houver falha na comunicação.
      */
-    public function execute(RegistrarBoletoRapidoDTO $cobrancaData): array
+    public function execute(RegistrarBoletoDTO $cobrancaData): array
     {
         $payload = $this->formatter->format($cobrancaData);
         $uri = '/cobrancas/v2/boletos';
