@@ -4,21 +4,20 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\AlterarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\AlterarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
-use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
+use Psr\Log\LoggerInterface;
 
 class AlterarBoletoUseCase
 {
  
     public function __construct(
         private HttpClientInterface $httpClient,
-        private FormatterInterface $formatter,
-        private ResponseParserInterface $responseParser,
-        private LoggerFactory $loggerFactory
+        private AlterarBoletoFormatter $formatter,
+        private AlterarBoletoResponseParser $responseParser,
+        private LoggerInterface $logger
     )
     { }
 
@@ -32,20 +31,16 @@ class AlterarBoletoUseCase
      */
     public function execute(AlterarBoletoDTO $alterarData): array
     {
-        $logger = $this->loggerFactory->createLogger('AlterarBoletoUseCase');
-        $logger->info('Início');
-
         $payload = $this->formatter->format($alterarData);
         $uri = '/cobrancas/v2/boletos/' . $alterarData->numeroBoleto->identificadorCompleto;
 
         try{
-            $responseJson = $this->httpClient->patch($uri, $payload, [], $logger);
+            $responseJson = $this->httpClient->patch($uri, $payload);
             $response = $this->responseParser->parse($responseJson);
 
-            $logger->info('Fim c/ sucesso');
             return $response;
         } catch (HttpCommunicationException $e){
-            $logger->critical('Fim c/ falha', [
+            $this->logger->critical('Fim c/ falha', [
                 'exception_message' => $e->getMessage(),
                 'http_code' => $e->getCode()
             ]);

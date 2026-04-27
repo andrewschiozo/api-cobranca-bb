@@ -4,20 +4,20 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoRapidoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
-use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
 use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
+use Psr\Log\LoggerInterface;
 
 class RegistrarBoletoUseCase
 {
  
     public function __construct(
         private HttpClientInterface $httpClient,
-        private FormatterInterface $formatter,
-        private ResponseParserInterface $responseParser,
-        private LoggerFactory $loggerFactory
+        private RegistrarBoletoFormatter $formatter,
+        private RegistrarBoletoResponseParser $responseParser,
+        private LoggerInterface $logger
     )
     { }
 
@@ -31,20 +31,16 @@ class RegistrarBoletoUseCase
      */
     public function execute(RegistrarBoletoRapidoDTO $cobrancaData): array
     {
-        $logger = $this->loggerFactory->createLogger('RegistrarBoletoUseCase');
-        $logger->info('Início');
-
         $payload = $this->formatter->format($cobrancaData);
         $uri = '/cobrancas/v2/boletos';
 
         try{
-            $responseJson = $this->httpClient->post($uri, $payload, [], $logger);
+            $responseJson = $this->httpClient->post($uri, $payload);
             $response = $this->responseParser->parse($responseJson);
 
-            $logger->info('Fim c/ sucesso');
             return $response;
         } catch (HttpCommunicationException $e){
-            $logger->critical('Fim c/ falha', [
+            $this->logger->critical('Fim c/ falha', [
                 'exception_message' => $e->getMessage(),
                 'http_code' => $e->getCode()
             ]);
