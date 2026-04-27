@@ -5,21 +5,27 @@ namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\ValorTituloInvalidoException;
 
-class ValorTituloVO
+readonly class ValorTituloVO
 {
-    public readonly float $valor;
+    private DinheiroVO $moeda;
 
-    public function __construct(string $valorTitulo) {
-
-        if (!filter_var($valorTitulo, FILTER_VALIDATE_FLOAT)) {
-            throw new ValorTituloInvalidoException('O valor do título deve ser um número real.');
+    public function __construct(string $valorRaw) 
+    {
+        if (!preg_match('/^\d+(\.\d{1,2})?$/', $valorRaw)) {
+            throw new ValorTituloInvalidoException("Formato de valor inválido. Use '100.50'.");
         }
 
-        if ($valorTitulo <= 0) {
-            throw new ValorTituloInvalidoException('O valor do título deve ser maior que zero.');
+        $valorObjeto = new DinheiroVO($valorRaw);
+
+        if ($valorObjeto->isMenorOuIgualAZero()) {
+            throw new ValorTituloInvalidoException("O título deve ter valor maior que zero.");
         }
 
-        $this->valor = floatval($valorTitulo);
+        $this->moeda = $valorObjeto;
     }
 
+    public function formatadoParaBB(): string 
+    {
+        return $this->moeda->__toString();
+    }
 }
