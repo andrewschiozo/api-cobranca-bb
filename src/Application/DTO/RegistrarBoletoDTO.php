@@ -3,10 +3,9 @@ declare(strict_types= 1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Application\DTO;
 
-use AndrewsChiozo\ApiCobrancaBb\Ports\DTOInterface;
 use InvalidArgumentException;
 
-class RegistrarBoletoDTO implements DTOInterface
+class RegistrarBoletoDTO
 {
     public function __construct(
         public readonly string $numeroConvenio,
