@@ -7,6 +7,7 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockTokenStorageAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\BufferedLoggerInterface;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -46,6 +47,7 @@ class GuzzleHttpClientIntegrationTest extends TestCase
             'appKey' => $apiKey],
             $errorParser,
             $mockTokenStorage,
+            new NullLogger()
         );
     }
     
@@ -71,7 +73,6 @@ class GuzzleHttpClientIntegrationTest extends TestCase
                     ]
                 ],
             [],
-            $testLogger
             );
             $this->fail('A requisição deveria ter falhado');
         } catch (BBApiException $e) {
@@ -86,7 +87,7 @@ class GuzzleHttpClientIntegrationTest extends TestCase
 
         //Se o arquivo de log foi criado
         $logPath = $this->getLastLogFilePath($this->loggerFactory);
-        error_log($logPath);
+
         $this->assertFileExists($logPath, 'O arquivo de log exclusivo da integração deve ter sido criado.');
 
         //Se o token foi obtido (olha no arquivo de log se tem a string que o adapter registra no log)

@@ -56,10 +56,11 @@ class GuzzleHttpClientAdapterTest extends TestCase
             self::FAKE_OPTIONS_HTTP,
             $this->errorParser,
             $this->tokenStorage,
+            $this->logger,
             $mockHttpClient
         );
 
-        $adapter->post('/qualquer/endpoint', [], [], $this->logger);
+        $adapter->post('/qualquer/endpoint', [], []);
 
         $this->assertEquals($expectedToken, $this->tokenStorage->getToken(), 'O token obtido via HTTP deve ser salvo no cache.');
     }
@@ -81,10 +82,11 @@ class GuzzleHttpClientAdapterTest extends TestCase
             self::FAKE_OPTIONS_HTTP,
             $this->errorParser,
             $this->tokenStorage,
+            $this->logger,
             $mockHttpClient
         );
         
-        $adapter->post('/fake/endpoint', [], [], $this->logger);
+        $adapter->post('/fake/endpoint', [], []);
 
         $this->assertEquals($cachedToken, $this->tokenStorage->getToken(), 'O token deve ter sido recuperado do cache.');
     }

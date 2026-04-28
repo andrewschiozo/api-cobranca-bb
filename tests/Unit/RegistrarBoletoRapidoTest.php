@@ -10,15 +10,21 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class RegistrarBoletoRapidoTest extends TestCase
 {
     private string $registrarBoletoRapidoFilePath = __DIR__ . '/../Mocks/registrar-boleto/request_registrar-boleto-rapido_success.json';
     // private array $registrarBoletoFilePath = __DIR__ . '/../Mocks/registrar-boleto/request_registrar-boleto_success.json';
     private string $registrarBoletoResponseFilePath = __DIR__ . '/../Mocks/registrar-boleto/response_registrar-boleto_success.json';
+
+    private NullLogger $logger;
+
+    protected function setUp(): void
+    {
+        $this->logger = new NullLogger();
+    }
 
     /**
      * Testa o cenário de sucesso ao emitir uma cobrança com FakeHttpClient.
@@ -33,17 +39,12 @@ class RegistrarBoletoRapidoTest extends TestCase
         $mockAdapter = new MockHttpClientAdapter();
         $mockAdapter->addMockResponse('POST', $uri, $mockResponseFilePath);
 
-        $mockLogger = $this->createMock(LoggerInterface::class);
-        $mockLogger->method('info');
-        $mockFactory = $this->createMock(LoggerFactory::class);
-        $mockFactory->method('createLogger')->willReturn($mockLogger);
-
         // CobrancaManager
         $useCase = new RegistrarBoletoUseCase(
         $mockAdapter,
         new RegistrarBoletoFormatter(),
         new RegistrarBoletoResponseParser(),
-        $mockFactory);
+        $this->logger);
         
         // Dados de entrada
         $mockDadosCobranca = json_decode(file_get_contents($this->registrarBoletoRapidoFilePath), true);
@@ -72,16 +73,11 @@ class RegistrarBoletoRapidoTest extends TestCase
             ->method('post')
             ->willThrowException(new HttpCommunicationException('Erro de conexão simulado.'));
 
-        $mockLogger = $this->createMock(LoggerInterface::class);
-        $mockLogger->method('info');
-        $mockFactory = $this->createMock(LoggerFactory::class);
-        $mockFactory->method('createLogger')->willReturn($mockLogger);
-
         $useCase = new RegistrarBoletoUseCase(
             $mockAdapter,
             new RegistrarBoletoFormatter(),
             new RegistrarBoletoResponseParser(),
-            $mockFactory
+            $this->logger
         );
 
         $useCase->execute(RegistrarBoletoDTO::fromArray($mockDadosCobranca));

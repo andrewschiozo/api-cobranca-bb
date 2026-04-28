@@ -13,7 +13,8 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockTokenStorageAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\JsonFileLogger;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 use PHPUnit\Framework\TestCase;
 
 class RegistrarBoletoRapidoIntegrationTest extends TestCase
@@ -31,14 +32,17 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             'clientId' => $_ENV['BB_COBRANCA_CLIENT_ID'],
             'clientSecret' => $_ENV['BB_COBRANCA_CLIENT_SECRET'],
             'appKey' => $_ENV['BB_COBRANCA_APP_KEY']
-        ], new ErrorResponseParser(),
-    new MockTokenStorageAdapter());
+        ],
+        new ErrorResponseParser(),
+        new MockTokenStorageAdapter(),
+        new NullLogger()
+    );
 
         $useCase = new RegistrarBoletoUseCase(
             $httpAdapter,
             new RegistrarBoletoFormatter(),
             new RegistrarBoletoResponseParser(),
-            new LoggerFactory('/logs')
+            new NullLogger()
         );
 
         // Dados de entrada
@@ -48,10 +52,8 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             "dataVencimento" => "2026-05-06",
             "valorTitulo" => "55.33",
             "nossoNumero" => self::$nossoNumeroAleatorio,
-            "pagador" => [
-                "numeroDocumento" => "81676009000119",
-                "cep" => "1000000"
-            ]
+            "pagadorNumeroDocumento" => "81676009000119",
+            "pagadorCep" => "1000000"
         ];
 
         // Emitir cobranca
@@ -81,24 +83,26 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             'clientId' => $_ENV['BB_COBRANCA_CLIENT_ID'],
             'clientSecret' => $_ENV['BB_COBRANCA_CLIENT_SECRET'],
             'appKey' => $_ENV['BB_COBRANCA_APP_KEY']
-        ], new ErrorResponseParser(), new MockTokenStorageAdapter());
+        ],
+        new ErrorResponseParser(),
+        new MockTokenStorageAdapter(),
+        new NullLogger()
+    );
 
         $dadosCobranca = [
             "numeroConvenio" => "3128557",
             "dataVencimento" => "2026-05-06",
             "valorTitulo" => "55.33",
             "nossoNumero" => self::$nossoNumeroAleatorio,
-            "pagador" => [
-                "numeroDocumento" => "81676009000119",
-                "cep" => "1000000"
-            ]
+            "pagadorNumeroDocumento" => "81676009000119",
+            "pagadorCep" => "1000000"
         ];
 
         $useCase = new RegistrarBoletoUseCase(
             $httpAdapter,
             new RegistrarBoletoFormatter(),
             new RegistrarBoletoResponseParser(),
-            new LoggerFactory('/logs')
+            new NullLogger()
         );
 
         $useCase->execute(RegistrarBoletoDTO::fromArray($dadosCobranca));
@@ -117,13 +121,17 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             'clientId' => $_ENV['BB_COBRANCA_CLIENT_ID'],
             'clientSecret' => $_ENV['BB_COBRANCA_CLIENT_SECRET'],
             'appKey' => $_ENV['BB_COBRANCA_APP_KEY']
-        ], new ErrorResponseParser(), new MockTokenStorageAdapter());
+        ],
+        new ErrorResponseParser(),
+        new MockTokenStorageAdapter(),
+        new NullLogger()
+    );
 
         $useCase = new RegistrarBoletoUseCase(
             $httpAdapter,
             new RegistrarBoletoFormatter(),
             new RegistrarBoletoResponseParser(),
-            new LoggerFactory('/logs')
+            new NullLogger()
         );
 
         $nossoNumeroAleatorio = date('ymd') . str_pad("" .rand(0, 9999), 4, '0', STR_PAD_LEFT);
@@ -132,10 +140,8 @@ class RegistrarBoletoRapidoIntegrationTest extends TestCase
             "dataVencimento" => "2026-05-06",
             "valorTitulo" => "55.33",
             "nossoNumero" => $nossoNumeroAleatorio,
-            "pagador" => [
-                "numeroDocumento" => "81676009000119",
-                "cep" => "1000000"
-            ]
+            "pagadorNumeroDocumento" => "81676009000119",
+            "pagadorCep" => "1000000"
         ];
 
         $useCase->execute(RegistrarBoletoDTO::fromArray($dadosCobranca));
