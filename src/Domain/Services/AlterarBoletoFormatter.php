@@ -4,40 +4,43 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Ports\DTOInterface;
-use AndrewsChiozo\ApiCobrancaBb\Ports\FormatterInterface;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorTituloVO;
+use DateTimeImmutable;
 
 /**
  * Serviço responsável por formatar e validar os dados internos de uma Alteração
  * de Cobrança no payload JSON exigido pela API do Banco do Brasil.
  */
-class AlterarBoletoFormatter implements FormatterInterface
+class AlterarBoletoFormatter
 {
     /**
      * Transforma os dados da Alteração de uma cobrança em um array compatível com o payload da API.
      * @param AlterarBoletoDTO $dto
      * @return array Payload pronto para ser enviado via HTTP
      */
-    public function format(DTOInterface $dto): array
+    public function format(AlterarBoletoDTO $dto): array
     {
-        if( !$dto instanceof AlterarBoletoDTO ) {
-            throw new \InvalidArgumentException('Tipo de dado inválido. Esperado: ' . AlterarBoletoDTO::class);
-        }
+
+        $numeroConvenio = new NumeroConvenioVO($dto->numeroConvenio);
+
         $payload = [
-            'numeroConvenio' => $dto->numeroConvenio->numero, 
+            'numeroConvenio' => $numeroConvenio->numero, 
         ];
 
-        if($dto->novaDataVencimento !== null) {
+        if($dto->dataVencimento !== null) {
+            $dataVencimento = new DateTimeImmutable($dto->dataVencimento);
             $payload['indicadorNovaDataVencimento'] = 'S';
             $payload['alteracaoData'] = [
-                'novaDataVencimento' => $dto->novaDataVencimento->format('d.m.Y')
+                'novaDataVencimento' => $dataVencimento->format('d.m.Y')
             ];
         }
 
-        if($dto->novoValorTitulo !== null) {
+        if($dto->valorTitulo !== null) {
+            $valorTitulo = new ValorTituloVO($dto->valorTitulo);
             $payload['indicadorNovoValorNominal'] = 'S';
             $payload['alteracaoValor'] = [
-                "novoValorNominal" => $dto->novoValorTitulo->valor
+                "novoValorNominal" => $valorTitulo->formatadoParaBB()
             ];
         }
 
