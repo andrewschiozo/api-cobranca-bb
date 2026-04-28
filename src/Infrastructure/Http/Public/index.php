@@ -14,7 +14,7 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '\..\..\..\..');
 $dotenv->load();
 
 // 2. Inicializa Container e Router
-$container = require __DIR__ . '\..\container.php';
+$container = require __DIR__ . '\..\..\Bootstrap\container.php';
 $dispatcher = require __DIR__ . '\..\routes.php';
 
 // 3. Cria a Request PSR-7

@@ -5,7 +5,7 @@ require realpath(__DIR__ . '/../../../vendor/autoload.php');
 // Carrega ENV e Container (mesma lógica do index.php)
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../');
 $dotenv->load();
-$container = require __DIR__ . '/../http/container.php';
+$container = require __DIR__ . '/../Bootstrap/container.php';
 
 // Simulação de roteamento CLI simples: php console.php detalhar 123456
 $method = $argv[1] ?? null;
