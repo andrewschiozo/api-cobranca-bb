@@ -51,6 +51,12 @@ $builder->addDefinitions([
             get(\AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade::class),
             $_ENV['BB_COBRANCA_CONVENIO'] // Aqui a mágica acontece
         ),
+    
+    \AndrewsChiozo\ApiCobrancaBb\Infrastructure\Console\Commands\BoletoCommand::class => \DI\create()
+        ->constructor(
+            get(\AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade::class),
+            $_ENV['BB_COBRANCA_CONVENIO']
+        ),
 ]);
 
 return $builder->build();
