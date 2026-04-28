@@ -21,4 +21,4 @@ Ainda em desenvolvimento 🤓
 ```
 
 ### Referências
-[Documentação oficial do Banco do Brasil](https://apoio.developers.bb.com.br/referency/post/5f9c2149f39b8500120ab13c)
+[Documentação oficial do Banco do Brasil](https://apoio.developers.bb.com.br/apis/5?versaoApi=2)
