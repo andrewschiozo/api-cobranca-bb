@@ -4,10 +4,10 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 
 class RegistrarBoletoUseCase

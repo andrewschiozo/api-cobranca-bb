@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
 
-use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
+use Override;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -28,6 +29,11 @@ class MockHttpClientAdapter implements HttpClientInterface
             throw new \InvalidArgumentException("Arquivo de mock não encontrado: " . $filePath);
         }
         $this->mockResponses[strtoupper($method)][$uri] = file_get_contents($filePath);
+    }
+
+    public function sendRequest(string $method, string $uri, array $options = []): string
+    {
+        throw new \Exception('Not implemented');
     }
 
     /**

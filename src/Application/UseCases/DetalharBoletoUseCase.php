@@ -4,12 +4,12 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\DetalharBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\DetalharBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 
 class DetalharBoletoUseCase

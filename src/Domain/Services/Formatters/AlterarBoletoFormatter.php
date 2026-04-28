@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
+namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;

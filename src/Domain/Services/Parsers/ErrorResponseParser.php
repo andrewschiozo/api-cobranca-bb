@@ -1,7 +1,7 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
+namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 

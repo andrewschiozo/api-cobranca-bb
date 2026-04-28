@@ -1,16 +1,25 @@
 <?php
 
-use DI\ContainerBuilder;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\FileTokenStorageAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\ErrorResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
-use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Ports\TokenStorageInterface;
-use Psr\Log\LoggerInterface;
 
+use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
+use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AutenticarUseCase;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Console\Commands\BoletoCommand;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Http\Controllers\BoletoController;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
+use DI\ContainerBuilder;
 use function DI\create;
 use function DI\get;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use Psr\Log\LoggerInterface;
+
+define('APP_ROOT', dirname(__DIR__, 3));
 
 $builder = new ContainerBuilder();
 
@@ -24,37 +33,48 @@ $builder->addDefinitions([
         'appKey'       => $_ENV['BB_COBRANCA_APP_KEY'],
     ],
 
-    // GuzzleHttp Adapter
+    // GuzzleHttpClientAdapter
     GuzzleHttpClientAdapter::class => function ($container) {
-        $config = $container->get('bb.config');
         return new GuzzleHttpClientAdapter(
-            options: $config,
+            logger: $container->get(LoggerInterface::class),
+            client: $container->get(ClientInterface::class)
+        );
+    },
+
+    // BBHttpClientAdapter
+    BBHttpClientAdapter::class => function ($container) {
+        return new BBHttpClientAdapter(
             errorParser: new ErrorResponseParser(),
-            tokenStorage: $container->get(TokenStorageInterface::class),
-            logger: $container->get(LoggerInterface::class)
+            client: $container->get(GuzzleHttpClientAdapter::class)
         );
     },
     
     // Mapeamento de interfaces para classes concretas
-    HttpClientInterface::class => get(GuzzleHttpClientAdapter::class),
+    HttpClientInterface::class => get(BBHttpClientAdapter::class),
 
-    // TokenStorage
-    TokenStorageInterface::class => create(FileTokenStorageAdapter::class)
-        ->constructor('/storage/cache/bb_api_token.json'),
+    ClientInterface::class => create(Client::class)->constructor(['base_uri' => $_ENV['BB_COBRANCA_URL_BASE'], 'verify' => false]),
 
     // Logger
-    LoggerFactory::class => create()->constructor('/storage/logs/'),
-    LoggerInterface::class => new LoggerFactory('/storage/logs/')->createLogger('bb-api'),
+    LoggerFactory::class => create()->constructor(APP_ROOT . '/storage/logs/'),
+    LoggerInterface::class => new LoggerFactory(APP_ROOT . '/storage/logs/')->createLogger('bb-api'),
 
-    \AndrewsChiozo\ApiCobrancaBb\Infrastructure\Http\Controllers\BoletoController::class => create()
+    AutenticarUseCase::class => create()
         ->constructor(
-            get(\AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade::class),
-            $_ENV['BB_COBRANCA_CONVENIO'] // Aqui a mágica acontece
+            get(GuzzleHttpClientAdapter::class),
+            new AutenticarFormatter(),
+            new AutenticarResponseParser(),
+            get(LoggerInterface::class)
+        ),
+
+    BoletoController::class => create()
+        ->constructor(
+            get(CobrancaManagerFacade::class),
+            $_ENV['BB_COBRANCA_CONVENIO']
         ),
     
-    \AndrewsChiozo\ApiCobrancaBb\Infrastructure\Console\Commands\BoletoCommand::class => \DI\create()
+    BoletoCommand::class => \DI\create()
         ->constructor(
-            get(\AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade::class),
+            get(CobrancaManagerFacade::class),
             $_ENV['BB_COBRANCA_CONVENIO']
         ),
 ]);

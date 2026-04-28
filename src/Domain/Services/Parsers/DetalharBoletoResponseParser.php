@@ -1,11 +1,9 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services;
+namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers;
 
-use AndrewsChiozo\ApiCobrancaBb\Ports\ResponseParserInterface;
-
-class DetalharBoletoResponseParser implements ResponseParserInterface
+class DetalharBoletoResponseParser
 {
     /**
      * Lida com a transformação do JSON de consulta da API do BB.

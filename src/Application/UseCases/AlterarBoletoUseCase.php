@@ -4,13 +4,13 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\AlterarBoletoFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\AlterarBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AlterarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AlterarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Exceptions\HttpCommunicationException;
-use AndrewsChiozo\ApiCobrancaBb\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 
 class AlterarBoletoUseCase
