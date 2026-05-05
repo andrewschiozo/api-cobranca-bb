@@ -22,7 +22,6 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\DetalharBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
-use Psr\Log\LoggerInterface;
 
 /**
  * Serviço de Fachada responsável por orquestrar a lógica de Cobranças.
@@ -33,11 +32,9 @@ class CobrancaManagerFacade
      * Cria um novo Serviço de Fachada de Cobranças.
      * 
      * @param BBHttpClientAdapter $httpClient Cliente HTTP para comunicação com a API do BB.
-     * @param LoggerInterface $logger Logger para registrar eventos e erros.
      */
     public function __construct(
         private BBHttpClientAdapter $httpClient,
-        private LoggerInterface $logger,
     ) { }
 
     public function autenticar(AutenticarDTO $dto): TokenResponseDTO
@@ -45,8 +42,7 @@ class CobrancaManagerFacade
         $useCase = new AutenticarUseCase(
             httpClient: $this->httpClient->getRawClient(),
             formatter: new AutenticarFormatter(),
-            responseParser: new AutenticarResponseParser(),
-            logger: $this->logger
+            responseParser: new AutenticarResponseParser()
         );
         return $useCase->execute($dto);
     }
@@ -70,8 +66,7 @@ class CobrancaManagerFacade
         $useCase = new RegistrarBoletoUseCase(
             httpClient: $this->httpClient,
             formatter: new RegistrarBoletoFormatter(),
-            responseParser: new RegistrarBoletoResponseParser(),
-            logger: $this->logger
+            responseParser: new RegistrarBoletoResponseParser()
         );
         return $useCase->execute($dto);
     }
@@ -87,8 +82,7 @@ class CobrancaManagerFacade
     {
         $usecase = new DetalharBoletoUseCase(
             httpClient: $this->httpClient,
-            responseParser: new DetalharBoletoResponseParser(),
-            logger: $this->logger
+            responseParser: new DetalharBoletoResponseParser()
         );
         return $usecase->execute($dto);
     }
@@ -105,8 +99,7 @@ class CobrancaManagerFacade
         $useCase = new AlterarBoletoUseCase(
             httpClient: $this->httpClient,
             formatter: new AlterarBoletoFormatter(),
-            responseParser: new AlterarBoletoResponseParser(),
-            logger: $this->logger
+            responseParser: new AlterarBoletoResponseParser()
         );
         return $useCase->execute($dto);
     }
