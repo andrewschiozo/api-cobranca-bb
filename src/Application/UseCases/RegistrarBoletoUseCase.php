@@ -8,7 +8,6 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormat
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use Psr\Log\LoggerInterface;
 
 class RegistrarBoletoUseCase
 {
@@ -16,8 +15,7 @@ class RegistrarBoletoUseCase
     public function __construct(
         private HttpClientInterface $httpClient,
         private RegistrarBoletoFormatter $formatter,
-        private RegistrarBoletoResponseParser $responseParser,
-        private LoggerInterface $logger
+        private RegistrarBoletoResponseParser $responseParser
     )
     { }
 
@@ -34,17 +32,9 @@ class RegistrarBoletoUseCase
         $payload = $this->formatter->format($cobrancaData);
         $uri = '/cobrancas/v2/boletos';
 
-        try{
-            $responseJson = $this->httpClient->post($uri, $payload);
-            $response = $this->responseParser->parse($responseJson);
+        $responseJson = $this->httpClient->post($uri, $payload);
+        $response = $this->responseParser->parse($responseJson);
 
-            return $response;
-        } catch (HttpCommunicationException $e){
-            $this->logger->critical('Fim c/ falha', [
-                'exception_message' => $e->getMessage(),
-                'http_code' => $e->getCode()
-            ]);
-            throw $e;
-        }
+        return $response;
     }
 }

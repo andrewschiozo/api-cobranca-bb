@@ -8,9 +8,7 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\DetalharBoletoResponsePa
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use Psr\Log\LoggerInterface;
 
 class DetalharBoletoUseCase
 {
@@ -18,7 +16,6 @@ class DetalharBoletoUseCase
     public function __construct(
         private HttpClientInterface $httpClient,
         private DetalharBoletoResponseParser $responseParser,
-        private LoggerInterface $logger
     )
     { }
 
@@ -36,20 +33,11 @@ class DetalharBoletoUseCase
             nossoNumero: $nossoNumero
         )->identificadorCompleto;
 
-        try{
-            $responseJson = $this->httpClient->get(
-                "/cobrancas/v2/boletos/{$nossoNumeroFormatado}",
-                ['numeroConvenio' => $numeroConvenio->numero]
-            );
+        $responseJson = $this->httpClient->get(
+            "/cobrancas/v2/boletos/{$nossoNumeroFormatado}",
+            ['numeroConvenio' => $numeroConvenio->numero]
+        );
 
-            return $this->responseParser->parse($responseJson);
-        } catch (HttpCommunicationException $e){
-            $this->logger->critical('Fim c/ falha', [
-                'exception_message' => $e->getMessage(),
-                'http_code' => $e->getCode()
-            ]);
-
-            throw $e;
-        }
+        return $this->responseParser->parse($responseJson);
     }
 }

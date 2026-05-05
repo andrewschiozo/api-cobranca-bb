@@ -11,7 +11,6 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use Psr\Log\LoggerInterface;
 
 class AlterarBoletoUseCase
 {
@@ -20,7 +19,6 @@ class AlterarBoletoUseCase
         private HttpClientInterface $httpClient,
         private AlterarBoletoFormatter $formatter,
         private AlterarBoletoResponseParser $responseParser,
-        private LoggerInterface $logger
     )
     { }
 
@@ -46,17 +44,9 @@ class AlterarBoletoUseCase
 
         $payload = $this->formatter->format($dto);
 
-        try{
-            $responseJson = $this->httpClient->patch($uri, $payload);
-            $response = $this->responseParser->parse($responseJson);
+        $responseJson = $this->httpClient->patch($uri, $payload);
+        $response = $this->responseParser->parse($responseJson);
 
-            return $response;
-        } catch (HttpCommunicationException $e){
-            $this->logger->critical('Fim c/ falha', [
-                'exception_message' => $e->getMessage(),
-                'http_code' => $e->getCode()
-            ]);
-            throw $e;
-        }
+        return $response;
     }
 }

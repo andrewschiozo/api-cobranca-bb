@@ -9,7 +9,6 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use Psr\Log\LoggerInterface;
 
 class AutenticarUseCase
 {
@@ -17,8 +16,7 @@ class AutenticarUseCase
     public function __construct(
         private HttpClientInterface $httpClient,
         private AutenticarFormatter $formatter,
-        private AutenticarResponseParser $responseParser,
-        private LoggerInterface $logger
+        private AutenticarResponseParser $responseParser
     )
     { }
 
