@@ -27,13 +27,16 @@ $appKey = $container->get('bb.config')['appKey'];
 $params = [
     'numeroConvenio' => $container->get('bb.config')['convenio'],
     'nossoNumero' => '2605050545',
-    'dataVencimento' => date("Y-m-d", strtotime("+60 days")),
-    'valorTitulo' => '355.97',
+    'dataVencimento' => date("Y-m-d", strtotime("+3 days")),
+    'valorTitulo' => '355.90',
 ];
 
 try {
     $dto = AlterarBoletoDTO::fromArray($params);
 
+    /**
+     * @var CobrancaManagerFacade
+     */
     $cobrancaManager = $container->get(CobrancaManagerFacade::class);
 
     $response = $cobrancaManager
@@ -45,9 +48,9 @@ try {
      * Na alteração, o BB só devolve a data/hora de atualização e número do contrato de cobrança
      */
     echo 'Nosso número: '     . $params['nossoNumero'] . PHP_EOL;
-    echo 'Número contrato: '  . $response['numeroContratoCobranca'] . PHP_EOL;
-    echo 'Data Atualização: ' . $response['dataAtualizacao'] . PHP_EOL;
-    echo 'Hora Atualização: ' . $response['horarioAtualizacao'] . PHP_EOL;
+    echo 'Número contrato: '  . $response->numeroContratoCobranca . PHP_EOL;
+    echo 'Data Atualização: ' . $response->dataAtualizacao . PHP_EOL;
+    echo 'Hora Atualização: ' . $response->horarioAtualizacao . PHP_EOL;
     exit(0);
 } catch (Throwable $th) {
     echo $th->getMessage();

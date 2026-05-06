@@ -8,6 +8,7 @@ use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\Responses\AlterarBoletoResponse;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\TokenResponseDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AlterarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AutenticarUseCase;
@@ -91,10 +92,10 @@ class CobrancaManagerFacade
      * Altera uma cobrança.
      * 
      * @param AlterarBoletoDTO $dto Dados da cobrança a ser alterada.
-     * @return array
+     * @return AlterarBoletoResponse
      * @throws HttpCommunicationException
      */
-    public function alterarCobranca(AlterarBoletoDTO $dto): array
+    public function alterarCobranca(AlterarBoletoDTO $dto): AlterarBoletoResponse
     {
         $useCase = new AlterarBoletoUseCase(
             httpClient: $this->httpClient,

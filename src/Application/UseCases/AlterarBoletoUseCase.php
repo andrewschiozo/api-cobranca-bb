@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\Responses\AlterarBoletoResponse;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AlterarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AlterarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
@@ -26,11 +27,11 @@ class AlterarBoletoUseCase
      * Envia os dados para a API do BB e registra uma nova cobrança.
      * 
      * @param AlterarBoletoDTO $dto Dados da alteração
-     * @return array Retorna os dados da alteração
+     * @return AlterarBoletoResponse
      * 
      * @throws HttpCommunicationException Se houver falha na comunicação.
      */
-    public function execute(AlterarBoletoDTO $dto): array
+    public function execute(AlterarBoletoDTO $dto): AlterarBoletoResponse
     {
         $numeroConvenio = new NumeroConvenioVO($dto->numeroConvenio);
         $nossoNumero = new NossoNumeroVO($dto->nossoNumero);
