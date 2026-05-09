@@ -3,20 +3,22 @@ declare(strict_types= 1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions;
 
+use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\BBHttpClientAuditoria;
+use Exception;
 use Throwable;
 
-class BBApiException extends \Exception
+class BBApiException extends Exception
 {
-    private array $apiResponse;
+    private BBHttpClientAuditoria $auditoria;
 
-    public function __construct(string $message, int $httpCode, array $apiResponse, ?Throwable $previous = null)
+    public function __construct(string $message, int $httpCode, BBHttpClientAuditoria $auditoria, ?Throwable $previous = null)
     {
         parent::__construct($message, $httpCode, $previous);
-        $this->apiResponse = $apiResponse;
+        $this->auditoria = $auditoria;
     }
 
-    public function getApiResponse(): array
+    public function getAuditoria(): BBHttpClientAuditoria
     {
-        return $this->apiResponse;
+        return $this->auditoria;
     }
 }

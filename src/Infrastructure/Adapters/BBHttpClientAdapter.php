@@ -3,25 +3,28 @@ declare(strict_types= 1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
 
+use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\BBHttpClientAuditoria;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use InvalidArgumentException;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\NetworkExceptionInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class BBHttpClientAdapter implements HttpClientInterface
 {
     private ?string $token = null;
     private ?string $appKey = null;
+    private BBHttpClientAuditoria $lastAudit;
 
     public function __construct(
         private ErrorResponseParser $errorParser,
-        private HttpClientInterface $client,
+        private ClientInterface $client,
     ) {
-    }
-
-    public function getRawClient(): HttpClientInterface
-    {
-        return $this->client;
     }
 
     public function withAuth(string $token, string $appKey): self 
@@ -32,50 +35,81 @@ class BBHttpClientAdapter implements HttpClientInterface
         return $clone;
     }
 
-    public function sendRequest(string $method, string $uri, array $options = []): string
+    public function lastAudit(): BBHttpClientAuditoria
     {
-        if (!$this->token || !$this->appKey) {
-            throw new InvalidArgumentException("Token e AppKey são obrigatórios.");
+        return $this->lastAudit;
+    }
+
+    public function sendRequest(RequestInterface $request): ResponseInterface
+    {
+        return $this->client->sendRequest($request);
+    }
+
+    private function request(string $method, string $uri, string $payload, array $headers = []): string
+    {
+        if (!empty($this->token) && !empty($this->appKey)) {
+            $headers = array_merge($options['headers'] ?? [], [
+                'Authorization' => 'Bearer ' . $this->token,
+                'X-Application-Key' => $this->appKey,
+            ]);
         }
 
-        $options['headers'] = array_merge($options['headers'] ?? [], [
-            'Authorization' => 'Bearer ' . $this->token,
-            'X-Application-Key' => $this->appKey,
-        ]);
+        $requestInfo = [
+            'method' => $method,
+            'uri' => $uri,
+            'headers' => $headers,
+            'payload' => $payload
+        ];
+
+        $request = new Request($method, $uri, $headers, $payload);
 
         try {
-            return $this->client->sendRequest($method, $uri, $options);
-        } catch (HttpCommunicationException $e) {
-            $this->errorParser->parse($e->getCode(), $e->getResponseBody());
-            throw $e;
+            $response = $this->client->sendRequest($request);
+            $responseBody = $response->getBody()->getContents();
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode >= 400) {
+                $this->errorParser->parse($statusCode, $responseBody);
+            }
+
+            $requestInfo['success'] = true;
+            $requestInfo['statusCode'] = $response->getStatusCode();
+            $requestInfo['response'] = $responseBody;
+            $this->lastAudit = BBHttpClientAuditoria::fromArray($requestInfo);
+
+            return $responseBody;
+        } catch (BBApiException | ClientException | NetworkExceptionInterface | Throwable $e) {
+
+            $requestInfo['success'] = false;
+            $requestInfo['statusCode'] = $e->getCode();
+            $requestInfo['response'] = $e->getMessage();
+            $this->lastAudit = BBHttpClientAuditoria::fromArray($requestInfo);
+            throw new BBApiException(
+                'Erro Integração API BB',
+                $this->lastAudit->statusCode,
+                $this->lastAudit
+            );
         }
+    }
+
+    public function get(string $uri, array $queryParams = [], array $headers = []): string
+    {
+        if (!empty($queryParams)) {
+            $uri = $uri . '?' . http_build_query($queryParams);
+        };
+        return $this->request('GET', $uri, '', $headers);
     }
     public function post(string $uri, array $payload, array $headers = []): string
     {
-        return $this->sendRequest('POST', $uri, [
-            'json' => $payload,
-            'headers' => $headers
-        ]);
-    }
-    public function get(string $uri, array $queryParams = [], array $headers = []): string
-    {
-        return $this->sendRequest('GET', $uri, [
-            'query' => $queryParams,
-            'headers' => $headers
-        ]);
-    }
-    public function put(string $uri, array $payload, array $headers = []): string
-    {
-        return $this->sendRequest('PUT', $uri, [
-            'json' => $payload,
-            'headers' => $headers
-        ]);
+        return $this->request('POST', $uri, json_encode($payload), $headers);
     }
     public function patch(string $uri, array $payload, array $headers = []): string
     {
-        return $this->sendRequest('PATCH', $uri, [
-            'json' => $payload,
-            'headers' => $headers
-        ]);
+        return $this->request('PATCH', $uri, json_encode($payload), $headers);
+    }
+
+    public function auth(string $uri, array $payload, array $headers = []): string
+    {
+        return $this->request('POST', $uri, http_build_query($payload), $headers);
     }
 }

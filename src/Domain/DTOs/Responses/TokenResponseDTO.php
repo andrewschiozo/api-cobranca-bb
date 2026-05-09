@@ -1,7 +1,7 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Application\DTO;
+namespace AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses;
 
 readonly class TokenResponseDTO
 {
@@ -13,7 +13,7 @@ readonly class TokenResponseDTO
     ) {
     }
 
-    public static function fromArray(array $data): TokenResponseDTO
+    public static function fromArray(array $data): self
     {
         return new self(
             accessToken: $data['accessToken'],
