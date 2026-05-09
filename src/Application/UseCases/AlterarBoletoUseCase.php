@@ -4,13 +4,12 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\Responses\AlterarBoletoResponse;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AlterarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AlterarBoletoResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
 
 class AlterarBoletoUseCase
@@ -24,14 +23,14 @@ class AlterarBoletoUseCase
     { }
 
     /**
-     * Envia os dados para a API do BB e registra uma nova cobrança.
+     * Envia os dados para a API do BB e altera um registro de cobrança.
      * 
      * @param AlterarBoletoDTO $dto Dados da alteração
-     * @return AlterarBoletoResponse
+     * @return array
      * 
-     * @throws HttpCommunicationException Se houver falha na comunicação.
+     * @throws BBApiException
      */
-    public function execute(AlterarBoletoDTO $dto): AlterarBoletoResponse
+    public function execute(AlterarBoletoDTO $dto): array
     {
         $numeroConvenio = new NumeroConvenioVO($dto->numeroConvenio);
         $nossoNumero = new NossoNumeroVO($dto->nossoNumero);
@@ -46,8 +45,6 @@ class AlterarBoletoUseCase
         $payload = $this->formatter->format($dto);
 
         $responseJson = $this->httpClient->patch($uri, $payload);
-        $response = $this->responseParser->parse($responseJson);
-
-        return $response;
+        return $this->responseParser->parse($responseJson);
     }
 }
