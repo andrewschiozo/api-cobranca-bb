@@ -3,35 +3,23 @@ declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers;
 
+use AndrewsChiozo\ApiCobrancaBb\Application\DTO\Responses\RegistroBoletoResponse;
+use JsonException;
+
 /**
- * Serviço responsável por receber a resposta JSON da API do BB e 
- * transformá-la em um formato de dados internos limpo e confiável.
+ * Serviço responsável por receber e tratar a resposta JSON da API do BB
  */
 class RegistrarBoletoResponseParser
 {
     /**
-     * Transforma o JSON de resposta da API em um array de dados limpos.
+     * Transforma o JSON de resposta da API em um array.
      * 
-     * @param string $jsonResponse JSON bruto retornado pela API.
-     * @return array Dados estruturados da cobrança.
-     * @throws \JsonException Se o JSON for inválido.
+     * @param string $response JSON retornado pela API.
+     * @return array
+     * @throws JsonException
      */
-    public function parse(string $jsonResponse): array
+    public function parse(string $response): array
     {
-        $data = json_decode($jsonResponse, true, 512, JSON_THROW_ON_ERROR);
-
-        return [
-            'beneficiario' => $data['beneficiario'] ?? [],
-            'qrCode' => $data['qrCode'] ?? [],
-            'numero' => $data['numero'] ?? null,
-            'numeroCarteira' => $data['numeroCarteira'] ?? null,
-            'numeroVariacaoCarteira' => $data['numeroVariacaoCarteira'] ?? null,
-            'codigoCliente' => $data['codigoCliente'] ?? null,
-            'linhaDigitavel' => $data['linhaDigitavel'] ?? null,
-            'codigoBarraNumerico' => $data['codigoBarraNumerico'] ?? null,
-            'numeroContratoCobranca' => $data['numeroContratoCobranca'] ?? null,
-            'urlImagemBoleto' => $data['urlImagemBoleto'] ?? null,
-            'observacao' => $data['observacao'] ?? null
-        ];
+        return json_decode($response, true, 10, JSON_THROW_ON_ERROR);
     }
 }
