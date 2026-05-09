@@ -3,7 +3,6 @@
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
 use DI\ContainerBuilder;
 use function DI\get;
@@ -34,19 +33,11 @@ $builder->addDefinitions([
         'convenio'     => $_ENV['BB_COBRANCA_CONVENIO']           ?? ''
     ],
 
-    // GuzzleHttpClientAdapter
-    GuzzleHttpClientAdapter::class => function ($container) {
-        return new GuzzleHttpClientAdapter(
-            logger: $container->get(LoggerInterface::class),
-            client: $container->get(ClientInterface::class)
-        );
-    },
-
     // BBHttpClientAdapter
     BBHttpClientAdapter::class => function ($container) {
         return new BBHttpClientAdapter(
             errorParser: new ErrorResponseParser(),
-            client: $container->get(GuzzleHttpClientAdapter::class)
+            client: $container->get(ClientInterface::class)
         );
     },
     
