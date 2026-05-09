@@ -8,13 +8,13 @@ use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\Responses\AlterarBoletoResponse;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\TokenResponseDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AlterarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AutenticarUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\DetalharBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\BBHttpClientAuditoria;
+use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\TokenResponseDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AlterarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
@@ -41,7 +41,7 @@ class CobrancaManagerFacade
     public function autenticar(AutenticarDTO $dto): TokenResponseDTO
     {
         $useCase = new AutenticarUseCase(
-            httpClient: $this->httpClient->getRawClient(),
+            httpClient: $this->httpClient,
             formatter: new AutenticarFormatter(),
             responseParser: new AutenticarResponseParser()
         );
@@ -55,12 +55,17 @@ class CobrancaManagerFacade
         return $clone;
     }
 
+    public function ultimaAuditoria(): BBHttpClientAuditoria
+    {
+        return $this->httpClient->lastAudit();
+    }
+
     /**
      * Envia os dados para a API do BB e registra uma nova cobrança.
      * 
      * @param RegistrarBoletoDTO $dto Dados da cobrança
      * @return array Retorna os dados da Cobrança criada
-     * @throws HttpCommunicationException Se houver falha na comunicação.
+     * @throws BBApiException
      */
     public function registrarCobranca(RegistrarBoletoDTO $dto): array
     {
@@ -77,7 +82,7 @@ class CobrancaManagerFacade
      * 
      * @param DetalharBoletoDTO $dto
      * @return array
-     * @throws HttpCommunicationException
+     * @throws BBApiException
      */
     public function detalharCobranca(DetalharBoletoDTO $dto): array
     {
@@ -92,10 +97,10 @@ class CobrancaManagerFacade
      * Altera uma cobrança.
      * 
      * @param AlterarBoletoDTO $dto Dados da cobrança a ser alterada.
-     * @return AlterarBoletoResponse
-     * @throws HttpCommunicationException
+     * @return array
+     * @throws BBApiException
      */
-    public function alterarCobranca(AlterarBoletoDTO $dto): AlterarBoletoResponse
+    public function alterarCobranca(AlterarBoletoDTO $dto): array
     {
         $useCase = new AlterarBoletoUseCase(
             httpClient: $this->httpClient,
