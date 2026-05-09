@@ -4,6 +4,7 @@ declare(strict_types= 1);
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
+use Exception;
 
 /**
  * Serviço responsável por interpretar o JSON de erro padrão da API do BB.
@@ -18,14 +19,13 @@ class ErrorResponseParser
     public function parse(int $httpCode, string $errorJson): void
     {
         try {
-            $data = json_decode($errorJson, true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode($errorJson, true, 10, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
-            throw new BBApiException("Erro de comunicação: Resposta da API não é um JSON válido.", $httpCode, ['raw_response' => $errorJson]);
+            throw new Exception("A resposta da API não é um JSON válido: {$errorJson}", $httpCode);
         }
 
         if(!isset($data['erros']) && !isset($data['error']) && !isset($data['errors'])) {
-            print_r($data);
-            throw new BBApiException('Não há um tratamento para o erro retornado pela API.', $httpCode, [ 'json' => $errorJson ]);
+            throw new Exception("Não há um tratamento para o erro retornado pela API: {$errorJson}", $httpCode);
         }
 
         $mensagemDetalhada = '';
@@ -35,15 +35,24 @@ class ErrorResponseParser
             }
         }
         if(isset($data["error"])) {
-            $mensagemDetalhada .= $data["error"] . ": " . $data["message"];
+            $detail = isset($data["message"]) ? $data["message"] : '';
+            $detail .= isset($data["error_description"]) ? $data["error_description"] : '';
+            $detail = empty($detail) ? 'Verifique o error parser, a API pode ter enviado um novo formato de resposta' : $detail;
+            $mensagemDetalhada .= $data["error"] . ": " . $detail;
         }
 
         if(isset($data['errors'])) {
             foreach($data['errors'] as $erro) {
-                $mensagemDetalhada .= $erro['message'] . "\n";
+
+                $mensagemDetalhada .= isset($erro['message']) ? 'Message: ' . $erro['message'] . '. ' : '';
+                $mensagemDetalhada .= isset($erro['code']) ? 'Code: ' . $erro['code'] . '. '  : '';
+                $mensagemDetalhada .= isset($erro['title']) ? 'Title: ' . $erro['title'] . '. '  : '';
+                $mensagemDetalhada .= isset($erro['detail']) ? 'Detail: ' . $erro['detail'] . '. '  : '';
+                $mensagemDetalhada = empty($mensagemDetalhada) ? 'Verifique o error parser, a API pode ter enviado um novo formato de resposta' : $mensagemDetalhada;
+                $mensagemDetalhada .= "\n";
             }
         }
 
-        throw new BBApiException($mensagemDetalhada, $httpCode, $data);
+        throw new Exception($mensagemDetalhada, $httpCode);
     }
 }
