@@ -1,9 +1,10 @@
 <?php
 
+require __DIR__ . '/../vendor/autoload.php';
+
 use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
-
-require __DIR__ . '/../vendor/autoload.php';
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 
 /**
  * O container é um facilitador, ele e entrega os CobrancaManagerFacade pronto para uso.
@@ -14,6 +15,11 @@ require __DIR__ . '/../vendor/autoload.php';
  * configurar o container existente no seu projeto
  */
 $container = require __DIR__ . '/../src/Infrastructure/Bootstrap/container.php';
+
+/**
+ * @var CobrancaManagerFacade
+ */
+$cobrancaManager = $container->get(CobrancaManagerFacade::class);
 
 /**
  * Para obter os parâmetros:
@@ -31,12 +37,33 @@ $params = [
 ];
 
 try {
-    $cobrancaManager = $container->get(CobrancaManagerFacade::class);    
+    
     $dto = AutenticarDTO::fromArray($params);
     $response = $cobrancaManager->autenticar($dto);
-    
+    echo 'Sucesso: ' . PHP_EOL . PHP_EOL;
     echo $response->accessToken . PHP_EOL;
+    // echo '- - - - - - - - - - - - - - - - - - - - - - -' . PHP_EOL;
+    // echo 'Auditoria: ' . PHP_EOL;
+    // print_r($cobrancaManager->ultimaAuditoria());
     exit(0);
-} catch (Throwable $th) {
-    echo $th->getMessage();
+} catch (BBApiException $e) { // Erro no http client ou no error parser
+    echo "Falha na autenticação: " . PHP_EOL;
+    echo '- - - - - - - - - - - - - - - - - - - - - - -' . PHP_EOL;
+    echo 'Auditoria: ' . PHP_EOL;
+    print_r($e->getAuditoria());
+    exit(1);
+} catch (JsonException $e) { // Erro no response parser
+    echo "Falha no parser do json: " . PHP_EOL;
+    echo "Code: " . $e->getCode() . PHP_EOL;
+    echo "Message: " . $e->getMessage() . PHP_EOL;
+    echo "File " . $e->getFile();
+    echo "Line: " . $e->getLine();
+    exit(2);
+} catch (Throwable $th) { // Erro não previsto
+    echo "Falha no processo: " . PHP_EOL;
+    echo "Code: " . $th->getCode() . PHP_EOL;
+    echo "Message: " . $th->getMessage() . PHP_EOL;
+    echo "File " . $th->getFile();
+    echo "Line: " . $th->getLine();
+    exit(2);
 }

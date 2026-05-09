@@ -2,9 +2,18 @@
 
 use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+/**
+ * O container é um facilitador, ele e entrega os CobrancaManagerFacade pronto para uso.
+ * Você deve ajustar as configurações de ambiente(client_id, client_secret) no container
+ * para que os exemplos funcionem.
+ * 
+ * Você não depende do container oferecido, você pode criar o seu próprio container ou
+ * configurar o container existente no seu projeto
+ */
 $container = require __DIR__ . '/../src/Infrastructure/Bootstrap/container.php';
 
 /**
@@ -25,26 +34,41 @@ $params = [
     'numeroConvenio' => $container->get('bb.config')['convenio'],
     'dataVencimento' => date("Y-m-d", strtotime("+30 days")),
     'valorTitulo' => '100.56',
-    'nossoNumero' => date('ymdhi'),
+    'nossoNumero' => date('ymdhs'),
     'pagadorNumeroDocumento' => '81676009000119',
     'pagadorCep' => '01035971'
 ];
 
 try {
+    /**
+     * @var CobrancaManagerFacade
+     */
+    $cobrancaManager = $container->get(CobrancaManagerFacade::class);
     $dto = RegistrarBoletoDTO::fromArray($params);
 
-    $cobrancaManager = $container->get(CobrancaManagerFacade::class);
-
-    $response = $cobrancaManager
-        ->withAuth($token, $appKey)
-        ->registrarCobranca($dto);
-
-    /**
-     * É pelo "número" que o boleto poderá ser consultado ou alterado.
-     */
-    echo 'Nosso número: ' . $params['nossoNumero'] . PHP_EOL;
-    echo 'Linha digitável: ' . $response['linhaDigitavel'] . PHP_EOL;
+    $cobrancaManager = $cobrancaManager->withAuth($token, $appKey);
+    $response = $cobrancaManager->registrarCobranca($dto);
+    echo 'Sucesso: ' . PHP_EOL . PHP_EOL;
+    print_r($response);
     exit(0);
-} catch (Throwable $th) {
-    echo $th->getMessage();
+} catch (BBApiException $e) { // Erro no http client ou no error parser
+    echo "Falha no registro: " . PHP_EOL;
+    echo '- - - - - - - - - - - - - - - - - - - - - - -' . PHP_EOL;
+    echo 'Auditoria: ' . PHP_EOL;
+    print_r($e->getAuditoria()->response);
+    exit(1);
+} catch (JsonException $e) { // Erro no response parser
+    echo "Falha no parser do json: " . PHP_EOL;
+    echo "Code: " . $e->getCode() . PHP_EOL;
+    echo "Message: " . $e->getMessage() . PHP_EOL;
+    echo "File " . $e->getFile() . PHP_EOL;
+    echo "Line: " . $e->getLine() . PHP_EOL;
+    exit(2);
+} catch (Throwable $th) { // Erro não previsto
+    echo "Falha no processo: " . PHP_EOL;
+    echo "Code: " . $th->getCode() . PHP_EOL;
+    echo "Message: " . $th->getMessage() . PHP_EOL;
+    echo "File " . $th->getFile() . PHP_EOL;
+    echo "Line: " . $th->getLine() . PHP_EOL;
+    exit(3);
 }

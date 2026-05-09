@@ -2,6 +2,7 @@
 
 use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -27,8 +28,8 @@ $appKey = $container->get('bb.config')['appKey'];
 $params = [
     'numeroConvenio' => $container->get('bb.config')['convenio'],
     'nossoNumero' => '2605050545',
-    'dataVencimento' => date("Y-m-d", strtotime("+3 days")),
-    'valorTitulo' => '355.90',
+    // 'dataVencimento' => date("Y-m-d", strtotime("+15 days")),
+    'valorTitulo' => '341.22',
 ];
 
 try {
@@ -39,19 +40,37 @@ try {
      */
     $cobrancaManager = $container->get(CobrancaManagerFacade::class);
 
-    $response = $cobrancaManager
-        ->withAuth($token, $appKey)
-        ->alterarCobranca($dto);
+    $cobrancaManager = $cobrancaManager->withAuth($token, $appKey);
+    $response = $cobrancaManager->alterarCobranca($dto);
 
     /**
      * É pelo "número" que o boleto poderá ser consultado ou alterado.
      * Na alteração, o BB só devolve a data/hora de atualização e número do contrato de cobrança
      */
     echo 'Nosso número: '     . $params['nossoNumero'] . PHP_EOL;
-    echo 'Número contrato: '  . $response->numeroContratoCobranca . PHP_EOL;
-    echo 'Data Atualização: ' . $response->dataAtualizacao . PHP_EOL;
-    echo 'Hora Atualização: ' . $response->horarioAtualizacao . PHP_EOL;
+    echo 'Número contrato: '  . $response['numeroContratoCobranca'] . PHP_EOL;
+    echo 'Data Atualização: ' . $response['dataAtualizacao'] . PHP_EOL;
+    echo 'Hora Atualização: ' . $response['horarioAtualizacao'] . PHP_EOL;
     exit(0);
-} catch (Throwable $th) {
-    echo $th->getMessage();
+
+} catch (BBApiException $e) { // Erro no http client ou no error parser
+    echo "Falha na alteração: " . PHP_EOL;
+    echo '- - - - - - - - - - - - - - - - - - - - - - -' . PHP_EOL;
+    echo 'Auditoria: ' . PHP_EOL;
+    print_r($e->getAuditoria()->response);
+    exit(1);
+} catch (JsonException $e) { // Erro no response parser
+    echo "Falha no parser do json: " . PHP_EOL;
+    echo "Code: " . $e->getCode() . PHP_EOL;
+    echo "Message: " . $e->getMessage() . PHP_EOL;
+    echo "File " . $e->getFile() . PHP_EOL;
+    echo "Line: " . $e->getLine() . PHP_EOL;
+    exit(2);
+} catch (Throwable $th) { // Erro não previsto
+    echo "Falha no processo: " . PHP_EOL;
+    echo "Code: " . $th->getCode() . PHP_EOL;
+    echo "Message: " . $th->getMessage() . PHP_EOL;
+    echo "File " . $th->getFile() . PHP_EOL;
+    echo "Line: " . $th->getLine() . PHP_EOL;
+    exit(3);
 }

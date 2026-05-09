@@ -2,6 +2,7 @@
 
 use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -29,9 +30,8 @@ try {
 
     $cobrancaManager = $container->get(CobrancaManagerFacade::class);
 
-    $response = $cobrancaManager
-        ->withAuth($token, $appKey)
-        ->detalharCobranca($dto);
+    $cobrancaManager = $cobrancaManager->withAuth($token, $appKey);
+    $response = $cobrancaManager->detalharCobranca($dto);
 
     echo 'Nosso número: ' . $params['nossoNumero'] . PHP_EOL;
     echo 'Vencimento: ' . $response['dataVencimentoTituloCobranca'] . PHP_EOL;
@@ -39,6 +39,24 @@ try {
     echo 'Valor Atual: ' . $response['valorAtualTituloCobranca'] . PHP_EOL;
     echo 'Linha digitável: ' . $response['codigoLinhaDigitavel'] . PHP_EOL;
     exit(0);
-} catch (Throwable $th) {
-    echo $th->getMessage();
+} catch (BBApiException $e) { // Erro no http client ou no error parser
+    echo "Falha no registro: " . PHP_EOL;
+    echo '- - - - - - - - - - - - - - - - - - - - - - -' . PHP_EOL;
+    echo 'Auditoria: ' . PHP_EOL;
+    print_r($e->getAuditoria()->response);
+    exit(1);
+} catch (JsonException $e) { // Erro no response parser
+    echo "Falha no parser do json: " . PHP_EOL;
+    echo "Code: " . $e->getCode() . PHP_EOL;
+    echo "Message: " . $e->getMessage() . PHP_EOL;
+    echo "File " . $e->getFile() . PHP_EOL;
+    echo "Line: " . $e->getLine() . PHP_EOL;
+    exit(2);
+} catch (Throwable $th) { // Erro não previsto
+    echo "Falha no processo: " . PHP_EOL;
+    echo "Code: " . $th->getCode() . PHP_EOL;
+    echo "Message: " . $th->getMessage() . PHP_EOL;
+    echo "File " . $th->getFile() . PHP_EOL;
+    echo "Line: " . $th->getLine() . PHP_EOL;
+    exit(3);
 }
