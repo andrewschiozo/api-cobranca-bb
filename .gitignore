@@ -5,12 +5,6 @@ composer.lock
 .env
 .phpunit.cache
 
-# Arquivos de cache
-storage/cache/*
-!storage/cache/.gitkeep
-
 # Arquivos de logs
-storage/logs/*
-!storage/logs/.gitkeep
 tests/logs/*
 !tests/logs/.gitkeep

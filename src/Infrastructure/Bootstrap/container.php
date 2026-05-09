@@ -3,7 +3,7 @@
 use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\LoggerFactory;
+use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\NullLoggerAdapter;
 use DI\ContainerBuilder;
 use function DI\get;
 use GuzzleHttp\Client;
@@ -52,7 +52,7 @@ $builder->addDefinitions([
     },
 
     // Logger
-    LoggerInterface::class => new LoggerFactory(APP_ROOT . '/storage/logs/')->createLogger('bb-api')
+    LoggerInterface::class => new NullLoggerAdapter()
 ]);
 
 return $builder->build();
