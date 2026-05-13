@@ -3,14 +3,23 @@ declare(strict_types= 1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\ValorTituloInvalidoException;
+use InvalidArgumentException;
 
 readonly class DinheiroVO 
 {
     private int $centavos;
 
+    /**
+     * @param string $valor Ex.: 99.99
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $valor) {
-        // Converte string "100.50" para int 10050
+        $valorLimpo = trim($valor);
+
+        if (filter_var($valorLimpo, FILTER_VALIDATE_FLOAT) === false) {
+            throw new InvalidArgumentException("O valor {$valor} não é um formato monetário string válido.");
+        }
+
         $this->centavos = (int) bcmul($valor, "100", 0);
     }
 
