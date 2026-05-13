@@ -5,7 +5,6 @@ namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DinheiroInvalidoException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DinheiroVO;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -71,6 +70,9 @@ class DinheiroVOTest extends TestCase
             'múltiplos pontos decimais'   => ['100.50.20'],
             'espaço no meio do número'    => ['10 0.50'],
             'apenas espaços'              => ['   '],
+            'tres casas decimais'         => ['100.559'],
+            'notação científica'          => ['1e2'],
+            'ponto flutuante solto'       => ['100.'],
         ];
     }
 }

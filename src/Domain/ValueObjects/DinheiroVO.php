@@ -9,6 +9,7 @@ use InvalidArgumentException;
 readonly class DinheiroVO 
 {
     private int $centavos;
+    private const BASE_CONVERSAO = "100";
 
     /**
      * @param string $valor Ex.: 99.99
@@ -17,11 +18,11 @@ readonly class DinheiroVO
     public function __construct(string $valor) {
         $valorLimpo = trim($valor);
 
-        if (filter_var($valorLimpo, FILTER_VALIDATE_FLOAT) === false) {
+        if (!preg_match('/^-?\d+(?:\.\d{1,2})?$/', $valorLimpo)) {
             throw new DinheiroInvalidoException($valor);
         }
 
-        $this->centavos = (int) bcmul($valor, "100", 0);
+        $this->centavos = (int) bcmul($valorLimpo, self::BASE_CONVERSAO, 0);
     }
 
     public function isMenorOuIgualAZero(): bool {
@@ -34,6 +35,6 @@ readonly class DinheiroVO
 
     public function __toString()
     {
-        return bcdiv((string)$this->centavos, "100", 2);
+        return bcdiv((string)$this->centavos, self::BASE_CONVERSAO, 2);
     }
 }
