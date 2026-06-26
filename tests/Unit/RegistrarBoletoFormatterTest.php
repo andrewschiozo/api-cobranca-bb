@@ -6,7 +6,7 @@ namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use PHPUnit\Framework\TestCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
 
 class RegistrarBoletoFormatterTest extends TestCase
 {
