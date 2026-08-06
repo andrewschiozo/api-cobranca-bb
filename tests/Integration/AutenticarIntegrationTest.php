@@ -5,21 +5,13 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AutenticarUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
 use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\TokenResponseDTO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockTokenStorageAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 

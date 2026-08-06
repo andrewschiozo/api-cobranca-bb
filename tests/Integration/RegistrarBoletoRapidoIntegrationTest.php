@@ -12,14 +12,9 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
 use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\GuzzleHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\MockTokenStorageAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\JsonFileLogger;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Logging\NullLogger;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 
