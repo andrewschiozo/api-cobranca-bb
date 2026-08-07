@@ -18,6 +18,7 @@ use DateTimeImmutable;
  */
 class RegistrarBoletoFormatter
 {
+    private array $data;
     /**
      * Transforma os dados da Cobrança em um array compatível com o payload da API.
      * * @param array $cobrancaData Dados internos (ex: ['valor' => 100.50, 'cliente' => '...'])
@@ -25,10 +26,6 @@ class RegistrarBoletoFormatter
      */
     public function format(RegistrarBoletoDTO $dto): array
     {
-        if( !$dto instanceof RegistrarBoletoDTO ) {
-            throw new \InvalidArgumentException('Tipo de dado inválido. Esperado: ' . RegistrarBoletoDTO::class);
-        }
-
         $convenio = new NumeroConvenioVO($dto->numeroConvenio);
         $nossoNumero = new NossoNumeroVO($dto->nossoNumero);
         $dataVencimento = new DateTimeImmutable($dto->dataVencimento);
@@ -47,7 +44,8 @@ class RegistrarBoletoFormatter
 
         $numeroTituloCliente = IdentificadorBoleto::create($convenio, $nossoNumero)->identificadorCompleto;
 
-        return [
+
+        $this->data = [
             'numeroConvenio' => $convenio->numero, 
             'dataVencimento' => $dataVencimento->format('d.m.Y'),
             'valorOriginal' => $valortitulo->formatadoParaBB(),
@@ -56,7 +54,18 @@ class RegistrarBoletoFormatter
                 'tipoInscricao' => $pagador->documento->tipo->value,
                 'numeroInscricao' => $pagador->documento->valor,
                 'cep' => $pagador->cep
-            ]
+            ],
         ];
+
+        $this->addDataEmissao($dto->dataEmissao);
+
+        return $this->data;
+    }
+
+    private function addDataEmissao(?string $dataEmissao = null): void
+    {
+        if ($dataEmissao) {
+            $this->data['dataEmissao'] = (new DateTimeImmutable($dataEmissao))->format('d.m.Y');
+        }
     }
 }

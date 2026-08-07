@@ -20,7 +20,8 @@ class RegistrarBoletoDTO
         public readonly ?string $pagadorBairro,
         public readonly ?string $pagadorUf,
         public readonly ?string $pagadorTelefone,
-        public readonly ?string $pagadorEmail
+        public readonly ?string $pagadorEmail,
+        public readonly ?string $dataEmissao,
     ) {}
 public static function fromArray(array $data): self
     {
@@ -38,6 +39,7 @@ public static function fromArray(array $data): self
             pagadorUf: $data['pagadorUf'] ?? null,
             pagadorTelefone: $data['pagadorTelefone'] ?? null,
             pagadorEmail: $data['pagadorEmail'] ?? null,
+            dataEmissao: $data['dataEmissao'] ?? null,
         );
     }
 }

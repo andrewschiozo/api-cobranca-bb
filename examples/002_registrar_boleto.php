@@ -36,7 +36,8 @@ $params = [
     'valorTitulo' => '100.56',
     'nossoNumero' => date('ymdhs'),
     'pagadorNumeroDocumento' => '81676009000119',
-    'pagadorCep' => '01035971'
+    'pagadorCep' => '01035971',
+    'dataEmissao' => date("Y-m-d", strtotime("-8 days")), // opcional
 ];
 
 try {

@@ -19,14 +19,38 @@ Isso não é uma LIB, é uma MÃE.
 ### Recursos disponíveis
 
 #### Registro
-- Data de vencimento
-- Valor do título
-- Nosso número
-- Dados do Pagador
+- [✓] Data de vencimento
+- [✓] Valor do título
+- [✓] Nosso número
+- [✓] Dados do Pagador
 - - Número do documento
 - - Nome
 - - Endereço (logradouro, cep, cidade, bairro, uf)
 - - Contato (telefone, email)
+- [✓] Data de Emissão 
+- [ ] Valor do Abatimento
+- [ ] Quantidade de Dias de Protesto
+- [ ] Negativação
+- - Quantidade de Dias de Negativação
+- - Órgão Negativador (SERASA/QUOD)
+- [ ] Indicador de Aceite Título Vencido
+- [ ] Número de Dias Limite de Recebimento
+- [ ] Código de Aceite (reconhecimento da dívida pelo pagador)
+- [ ] Tipo do Título (padrão DUPLICATA MERCANTIL)
+- [ ] Indicador de Permissão de Recebimento Parcial
+- [ ] Número do título para o Beneficiário
+- [ ] Mensagem Bloqueto Ocorrência (impressa no boleto)
+- [ ] Descontos (SEM DESCONTO, VALOR FIXO, PERCENTUAL, POR DIA DE ANTECIPAÇÃO)
+- - Primeiro Desconto
+- - Segundo Desconto
+- - Terceiro Desconto
+- [ ] Juros (VALOR POR DIA ATRASO, TAXA MENSAL, ISENTO)
+- [ ] Multa (SEM MULTA, VALOR FIXO, PERCENTUAL)
+- [ ] Dados do Beneficiário Final (sacador avalista)
+- - Número do documento
+- - Nome
+- [ ] QRCode Pix
+
 
 ### Consulta
 - Consulta de boletos pelo nosso número, retornando todos os dados do boleto
