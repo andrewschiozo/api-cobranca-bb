@@ -5,6 +5,7 @@ namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
+use Psr\Clock\ClockInterface;
 
 readonly class DataEmissaoVO
 {
@@ -19,14 +20,16 @@ readonly class DataEmissaoVO
      * @param DateTimeImmutable $data
      * @param ?DateTimeImmutable $dataMinimaLimite
      * @param ?DateTimeImmutable $dataMaximaLimite
+     * @param ?ClockInterface $clock
      * @throws InvalidArgumentException
      */
     public function __construct(
         DateTimeImmutable $data,
         ?DateTimeImmutable $dataMaximaLimite = null,
-        ?DateTimeImmutable $dataMinimaLimite = null
+        ?DateTimeImmutable $dataMinimaLimite = null,
+        ?ClockInterface $clock = null
     ) {
-        $dataMaximaLimite = $dataMaximaLimite ?? new DateTimeImmutable('today');
+        $dataMaximaLimite = $dataMaximaLimite ?? ($clock?->now() ?? new DateTimeImmutable('today'));
         $dataMinimaLimite = $dataMinimaLimite ?? $dataMaximaLimite->modify('-1 year');
 
         if ($data > $dataMaximaLimite) {
@@ -38,5 +41,22 @@ readonly class DataEmissaoVO
         }
 
         $this->data = $data;
+    }
+
+    /**
+     * Named Constructor p/ injetar um Clock(PSR-20)
+     */
+    public static function withClock(
+        DateTimeImmutable $data,
+        ClockInterface $clock,
+        ?DateTimeImmutable $dataMaximaLimite = null,
+        ?DateTimeImmutable $dataMinimaLimite = null
+    ): self {
+        return new self(
+            data: $data,
+            dataMaximaLimite: $dataMaximaLimite,
+            dataMinimaLimite: $dataMinimaLimite,
+            clock: $clock
+        );
     }
 }
