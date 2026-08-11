@@ -26,6 +26,7 @@
     "require": {
         "guzzlehttp/guzzle": "^7.10",
         "psr/log": "^3.0",
-        "php-di/php-di": "^7.1"
+        "php-di/php-di": "^7.1",
+        "psr/clock": "^1.0"
     }
 }
