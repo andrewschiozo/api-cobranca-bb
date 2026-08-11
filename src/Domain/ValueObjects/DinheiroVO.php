@@ -29,11 +29,7 @@ readonly class DinheiroVO
         return $this->centavos <= 0;
     }
 
-    public function toString(): string {
-        return $this->__toString();
-    }
-
-    public function __toString()
+    public function __toString(): string
     {
         return bcdiv((string)$this->centavos, self::BASE_CONVERSAO, 2);
     }

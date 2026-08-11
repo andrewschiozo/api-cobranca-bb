@@ -17,7 +17,7 @@ class DinheiroVOTest extends TestCase
     {
         $dinheiro = new DinheiroVO($entrada);
 
-        $this->assertSame($saidaEsperada, $dinheiro->toString());
+        $this->assertSame($saidaEsperada, $dinheiro->__toString());
         $this->assertSame($saidaEsperada, (string)$dinheiro);
     }
 
