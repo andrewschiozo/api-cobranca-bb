@@ -19,16 +19,16 @@ Isso não é uma LIB, é uma MÃE.
 ### Recursos disponíveis
 
 #### Registro
-- [✓] Data de vencimento
-- [✓] Valor do título
-- [✓] Nosso número
-- [✓] Dados do Pagador
+- [x] Data de vencimento
+- [x] Valor do título
+- [x] Nosso número
+- [x] Dados do Pagador
 - - Número do documento
 - - Nome
 - - Endereço (logradouro, cep, cidade, bairro, uf)
 - - Contato (telefone, email)
-- [✓] Data de Emissão 
-- [ ] Valor do Abatimento
+- [x] Data de Emissão 
+- [x] Valor do Abatimento
 - [ ] Quantidade de Dias de Protesto
 - [ ] Negativação
 - - Quantidade de Dias de Negativação
