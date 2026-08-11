@@ -9,6 +9,7 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\PagadorVO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorAbatimentoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorTituloVO;
 use DateTimeImmutable;
 
@@ -58,6 +59,7 @@ class RegistrarBoletoFormatter
         ];
 
         $this->addDataEmissao($dto->dataEmissao);
+        $this->addValorAbatimento($dto->valorAbatimento);
 
         return $this->data;
     }
@@ -66,6 +68,13 @@ class RegistrarBoletoFormatter
     {
         if ($dataEmissao) {
             $this->data['dataEmissao'] = (new DateTimeImmutable($dataEmissao))->format('d.m.Y');
+        }
+    }
+
+    private function addValorAbatimento(?string $valorAbatimento = null): void
+    {
+        if ($valorAbatimento) {
+            $this->data['valorAbatimento'] = (new ValorAbatimentoVO($valorAbatimento))->formatadoParaBB();
         }
     }
 }
