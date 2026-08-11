@@ -23,10 +23,10 @@ Isso não é uma LIB, é uma MÃE.
 - [x] Valor do título
 - [x] Nosso número
 - [x] Dados do Pagador
-- - Número do documento
-- - Nome
-- - Endereço (logradouro, cep, cidade, bairro, uf)
-- - Contato (telefone, email)
+- - [x] Número do documento
+- - [x] Nome
+- - [x] Endereço (logradouro, cep, cidade, bairro, uf)
+- - [x] Contato (telefone, email)
 - [x] Data de Emissão 
 - [x] Valor do Abatimento
 - [ ] Quantidade de Dias de Protesto
@@ -38,7 +38,7 @@ Isso não é uma LIB, é uma MÃE.
 - [ ] Código de Aceite (reconhecimento da dívida pelo pagador)
 - [ ] Tipo do Título (padrão DUPLICATA MERCANTIL)
 - [ ] Indicador de Permissão de Recebimento Parcial
-- [ ] Número do título para o Beneficiário
+- [x] Número do título para o Beneficiário
 - [ ] Mensagem Bloqueto Ocorrência (impressa no boleto)
 - [ ] Descontos (SEM DESCONTO, VALOR FIXO, PERCENTUAL, POR DIA DE ANTECIPAÇÃO)
 - - Primeiro Desconto
@@ -47,8 +47,8 @@ Isso não é uma LIB, é uma MÃE.
 - [ ] Juros (VALOR POR DIA ATRASO, TAXA MENSAL, ISENTO)
 - [ ] Multa (SEM MULTA, VALOR FIXO, PERCENTUAL)
 - [ ] Dados do Beneficiário Final (sacador avalista)
-- - Número do documento
-- - Nome
+- - [ ] Número do documento
+- - [ ] Nome
 - [ ] QRCode Pix
 
 

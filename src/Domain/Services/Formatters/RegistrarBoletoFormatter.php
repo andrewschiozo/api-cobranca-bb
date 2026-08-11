@@ -8,6 +8,7 @@ use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DocumentoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\PagadorVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorAbatimentoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorTituloVO;
@@ -45,7 +46,6 @@ class RegistrarBoletoFormatter
 
         $numeroTituloCliente = IdentificadorBoleto::create($convenio, $nossoNumero)->identificadorCompleto;
 
-
         $this->data = [
             'numeroConvenio' => $convenio->numero, 
             'dataVencimento' => $dataVencimento->format('d.m.Y'),
@@ -60,6 +60,7 @@ class RegistrarBoletoFormatter
 
         $this->addDataEmissao($dto->dataEmissao);
         $this->addValorAbatimento($dto->valorAbatimento);
+        $this->addNumeroTituloBeneficiario($dto->numeroTituloBeneficiario);
 
         return $this->data;
     }
@@ -75,6 +76,14 @@ class RegistrarBoletoFormatter
     {
         if ($valorAbatimento) {
             $this->data['valorAbatimento'] = (new ValorAbatimentoVO($valorAbatimento))->formatadoParaBB();
+        }
+    }
+
+    private function addNumeroTituloBeneficiario(?string $numeroTituloBeneficiario = null): void
+    {
+        if ($numeroTituloBeneficiario) {
+            $vo = new NumeroTituloBeneficiarioVO($numeroTituloBeneficiario);
+            $this->data['numeroTituloBeneficiario'] = $vo->numeroTitulo;
         }
     }
 }

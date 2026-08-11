@@ -37,8 +37,9 @@ $params = [
     'nossoNumero' => date('ymdhs'),
     'pagadorNumeroDocumento' => '81676009000119',
     'pagadorCep' => '01035971',
-    'dataEmissao' => date("Y-m-d", strtotime("-8 days")), // opcional
-    'valorAbatimento' => '10.50', // opcional
+    // 'dataEmissao' => date("Y-m-d", strtotime("-8 days")), // opcional
+    // 'valorAbatimento' => '10.50', // opcional
+    // 'numeroTituloBeneficiario' => 'ID-001ABC-def', // opcional
 ];
 
 try {
