@@ -24,24 +24,29 @@ class ErrorResponseParser
             throw new Exception("A resposta da API não é um JSON válido: {$errorJson}", $httpCode);
         }
 
-        if(!isset($data['erros']) && !isset($data['error']) && !isset($data['errors'])) {
+        if (
+            !isset($data['erros']) &&
+            !isset($data['error']) &&
+            !isset($data['errors']) &&
+            !isset($data['detail'])
+        ) {
             throw new Exception("Não há um tratamento para o erro retornado pela API: {$errorJson}", $httpCode);
         }
 
         $mensagemDetalhada = '';
-        if(isset($data['erros'])) {
+        if (isset($data['erros'])) {
             foreach($data['erros'] as $erro) {
                 $mensagemDetalhada .= $erro['mensagem'] . "\n";
             }
         }
-        if(isset($data["error"])) {
+        if (isset($data["error"])) {
             $detail = isset($data["message"]) ? $data["message"] : '';
             $detail .= isset($data["error_description"]) ? $data["error_description"] : '';
             $detail = empty($detail) ? 'Verifique o error parser, a API pode ter enviado um novo formato de resposta' : $detail;
             $mensagemDetalhada .= $data["error"] . ": " . $detail;
         }
 
-        if(isset($data['errors'])) {
+        if (isset($data['errors'])) {
             foreach($data['errors'] as $erro) {
 
                 $mensagemDetalhada .= isset($erro['message']) ? 'Message: ' . $erro['message'] . '. ' : '';
@@ -51,6 +56,10 @@ class ErrorResponseParser
                 $mensagemDetalhada = empty($mensagemDetalhada) ? 'Verifique o error parser, a API pode ter enviado um novo formato de resposta' : $mensagemDetalhada;
                 $mensagemDetalhada .= "\n";
             }
+        }
+
+        if (isset($data['detail'])) {
+            $mensagemDetalhada .= $data['detail'] . "\n";
         }
 
         throw new Exception($mensagemDetalhada, $httpCode);
