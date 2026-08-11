@@ -18,7 +18,7 @@ readonly class ValorAbatimentoVO
         $valorObjeto = new DinheiroVO($valorRaw);
 
         if ($valorObjeto->isMenorOuIgualAZero()) {
-            throw new ValorAbatimentoInvalidoException("O abatimento deve ter valor maior que zero.");
+            throw new ValorAbatimentoInvalidoException("Valor do abatimento deve ser maior que zero.");
         }
 
         $this->moeda = $valorObjeto;

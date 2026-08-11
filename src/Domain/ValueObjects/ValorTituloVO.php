@@ -12,13 +12,13 @@ readonly class ValorTituloVO
     public function __construct(string $valorRaw) 
     {
         if (!preg_match('/^\d+(\.\d{1,2})?$/', $valorRaw)) {
-            throw new ValorTituloInvalidoException("Formato de valor inválido. Use '100.50'.");
+            throw new ValorTituloInvalidoException("Valor do título com formato inválido. Use '100.50'.");
         }
 
         $valorObjeto = new DinheiroVO($valorRaw);
 
         if ($valorObjeto->isMenorOuIgualAZero()) {
-            throw new ValorTituloInvalidoException("O título deve ter valor maior que zero.");
+            throw new ValorTituloInvalidoException("Valor do título deve ter ser maior que zero.");
         }
 
         $this->moeda = $valorObjeto;
