@@ -33,6 +33,8 @@ class RegistrarBoletoDTO
         public readonly ?string $desconto3Tipo,
         public readonly ?string $desconto3Data,
         public readonly ?string $desconto3Valor,
+        public readonly ?string $jurosMoraTipo,
+        public readonly ?string $jurosMoraValor,
     ) {}
 public static function fromArray(array $data): self
     {
@@ -62,6 +64,8 @@ public static function fromArray(array $data): self
             desconto3Tipo: $data['desconto3Tipo'] ?? null,
             desconto3Data: $data['desconto3Data'] ?? null,
             desconto3Valor: $data['desconto3Valor'] ?? null,
+            jurosMoraTipo: $data['jurosMoraTipo'] ?? null,
+            jurosMoraValor: $data['jurosMoraValor'] ?? null,
         );
     }
 }

@@ -6,9 +6,11 @@ namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters;
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Collections\DescontoCollection;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DescontoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\JurosMoraTipoEnum;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DescontoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DocumentoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\JurosMoraVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
@@ -67,6 +69,7 @@ class RegistrarBoletoFormatter
         $this->addValorAbatimento($dto->valorAbatimento);
         $this->addNumeroTituloBeneficiario($dto->numeroTituloBeneficiario);
         $this->addDescontos($dto);
+        $this->addJurosMora($dto->jurosMoraTipo, $dto->jurosMoraValor);
 
         return $this->data;
     }
@@ -148,15 +151,34 @@ class RegistrarBoletoFormatter
 
     private function formatDesconto(DescontoVO $desconto): array
     {
+        $keyValor = $desconto->tipo === DescontoTipoEnum::PERCENTUAL_ATE_DATA ? "porcentagem" : "valor";
+     
         $descontoFormatado = [
-            "tipo" => $desconto->tipo->value,
-            "dataExpiracao" => $desconto->dataLimite->format('d.m.Y')
+            "tipo"          => $desconto->tipo->value,
+            "dataExpiracao" => $desconto->dataLimite->format('d.m.Y'),
+            $keyValor       => $desconto->__toString()
         ];
 
-        $keyValor = $desconto->tipo === DescontoTipoEnum::PERCENTUAL_ATE_DATA ? "porcentagem" : "valor";
-        
-        $descontoFormatado[$keyValor] = $desconto->__toString();
-
         return $descontoFormatado;
+    }
+
+    private function addJurosMora(?string $tipo, ?string $valor): void
+    {
+        if (!$tipo) {
+            return;
+        }
+
+        $jurosMoraVO = new JurosMoraVO(
+            tipo: JurosMoraTipoEnum::tryFromString($tipo ?? JurosMoraTipoEnum::DISPENSAR->name),
+            valor: $valor
+        );
+
+        $keyValor = $jurosMoraVO->tipo === JurosMoraTipoEnum::TAXA_MENSAL ? "porcentagem" : "valor";
+    
+        $this->data['jurosMora'] = [
+            'tipo'      => $jurosMoraVO->tipo->value,
+            $keyValor   => $jurosMoraVO->__toString()
+        ];
+        
     }
 }

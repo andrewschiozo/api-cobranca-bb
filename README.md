@@ -44,7 +44,7 @@ Isso não é uma LIB, é uma MÃE.
 - - [x] Primeiro Desconto (O tipo do primeiro desconto será utilizado para o segundo e terceiro desconto.)
 - - [x] Segundo Desconto
 - - [x] Terceiro Desconto
-- [ ] Juros (VALOR POR DIA ATRASO, TAXA MENSAL, ISENTO)
+- [x] Juros (VALOR POR DIA ATRASO, TAXA MENSAL, ISENTO)
 - [ ] Multa (SEM MULTA, VALOR FIXO, PERCENTUAL)
 - [ ] Dados do Beneficiário Final (sacador avalista)
 - - [ ] Número do documento
@@ -87,4 +87,4 @@ composer install
 - Implementar todas as opções de alteração do boleto
 - Substituir retornos em array por retornos tipados (DTOs) p/ melhor previsibilidade
 - Criar camada `RuleChecker` para validar o payload antes de enviar p/ o BB
-- Remover duplicidade de regras/validação p/ Value Objects do tipo dinheiro
+- Remover duplicidade de regras/validação p/ Value Objects do tipo dinheiro. Abstrair valores monetários e percentuais.

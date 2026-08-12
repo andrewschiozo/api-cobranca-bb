@@ -40,15 +40,17 @@ $params = [
     // 'dataEmissao' => date("Y-m-d", strtotime("-8 days")), // opcional
     // 'valorAbatimento' => '10.50', // opcional
     // 'numeroTituloBeneficiario' => 'ID-001ABC-def', // opcional
-    'desconto1Tipo' => 'VALOR_FIXO', // opcional
-    'desconto1Data' => date("Y-m-d", strtotime("+10 days")),
-    'desconto1Valor' => '10.00', // opcional
-    'desconto2Tipo' => 'PERCENTUAL', // opcional
-    'desconto2Data' => date("Y-m-d", strtotime("+11 days")),
-    'desconto2Valor' => '9.00', // opcional
-    'desconto3Tipo' => 'PERCENTUAL', // opcional
-    'desconto3Data' => date("Y-m-d", strtotime("+12 days")),
-    'desconto3Valor' => '8.00', // opcional
+    // 'desconto1Tipo' => 'VALOR_FIXO', // opcional
+    // 'desconto1Data' => date("Y-m-d", strtotime("+10 days")),
+    // 'desconto1Valor' => '10.00', // opcional
+    // 'desconto2Tipo' => 'PERCENTUAL', // opcional
+    // 'desconto2Data' => date("Y-m-d", strtotime("+11 days")),
+    // 'desconto2Valor' => '9.00', // opcional
+    // 'desconto3Tipo' => 'PERCENTUAL', // opcional
+    // 'desconto3Data' => date("Y-m-d", strtotime("+12 days")),
+    // 'desconto3Valor' => '8.00', // opcional
+    'jurosMoraTipo' => 'VALOR_DIA_ATRASO', // opcional
+    'jurosMoraValor' => '5.00', // opcional
 ];
 
 try {
