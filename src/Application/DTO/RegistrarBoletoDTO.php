@@ -24,6 +24,15 @@ class RegistrarBoletoDTO
         public readonly ?string $dataEmissao,
         public readonly ?string $valorAbatimento,
         public readonly ?string $numeroTituloBeneficiario,
+        public readonly ?string $desconto1Tipo,
+        public readonly ?string $desconto1Data,
+        public readonly ?string $desconto1Valor,
+        public readonly ?string $desconto2Tipo,
+        public readonly ?string $desconto2Data,
+        public readonly ?string $desconto2Valor,
+        public readonly ?string $desconto3Tipo,
+        public readonly ?string $desconto3Data,
+        public readonly ?string $desconto3Valor,
     ) {}
 public static function fromArray(array $data): self
     {
@@ -44,6 +53,15 @@ public static function fromArray(array $data): self
             dataEmissao: $data['dataEmissao'] ?? null,
             valorAbatimento: $data['valorAbatimento'] ?? null,
             numeroTituloBeneficiario: $data['numeroTituloBeneficiario'] ?? null,
+            desconto1Tipo: $data['desconto1Tipo'] ?? null,
+            desconto1Data: $data['desconto1Data'] ?? null,
+            desconto1Valor: $data['desconto1Valor'] ?? null,
+            desconto2Tipo: $data['desconto2Tipo'] ?? null,
+            desconto2Data: $data['desconto2Data'] ?? null,
+            desconto2Valor: $data['desconto2Valor'] ?? null,
+            desconto3Tipo: $data['desconto3Tipo'] ?? null,
+            desconto3Data: $data['desconto3Data'] ?? null,
+            desconto3Valor: $data['desconto3Valor'] ?? null,
         );
     }
 }

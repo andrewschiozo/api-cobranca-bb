@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters;
 
 use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Collections\DescontoCollection;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DescontoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DescontoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DocumentoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
@@ -21,6 +24,8 @@ use DateTimeImmutable;
 class RegistrarBoletoFormatter
 {
     private array $data;
+    private const QUANTIDADE_DESCONTOS = 3;
+
     /**
      * Transforma os dados da Cobrança em um array compatível com o payload da API.
      * * @param array $cobrancaData Dados internos (ex: ['valor' => 100.50, 'cliente' => '...'])
@@ -61,6 +66,7 @@ class RegistrarBoletoFormatter
         $this->addDataEmissao($dto->dataEmissao);
         $this->addValorAbatimento($dto->valorAbatimento);
         $this->addNumeroTituloBeneficiario($dto->numeroTituloBeneficiario);
+        $this->addDescontos($dto);
 
         return $this->data;
     }
@@ -85,5 +91,72 @@ class RegistrarBoletoFormatter
             $vo = new NumeroTituloBeneficiarioVO($numeroTituloBeneficiario);
             $this->data['numeroTituloBeneficiario'] = $vo->numeroTitulo;
         }
+    }
+
+    private function addDescontos(RegistrarBoletoDTO $dto)
+    {
+        $descontoCollection = $this->createDescontoCollection($dto);
+
+        if (empty($descontoCollection->items)) {
+            return;
+        }
+
+        $prefixos = ['desconto', 'segundoDesconto', 'terceiroDesconto'];
+        $descontos = [];
+        for ($i = 0; $i < self::QUANTIDADE_DESCONTOS; $i++) {
+            $desconto = $descontoCollection->items[$i] ?? null;
+
+            if ($desconto === null || $desconto->tipo === DescontoTipoEnum::SEM_DESCONTO) {
+                continue;
+            }
+
+            $descontos[$prefixos[$i]] = $this->formatDesconto($desconto);
+        }
+
+        $this->data = array_merge($this->data, $descontos);
+    }
+
+    private function createDescontoCollection(RegistrarBoletoDTO $dto): DescontoCollection
+    {
+        $descontos = new DescontoCollection();
+        $tipoPrimeiroDesconto = null;
+
+        for ($i = 1; $i <= self::QUANTIDADE_DESCONTOS; $i++) {
+            $tipo  = $dto->{'desconto' . $i . 'Tipo'} ?? null;
+
+            if ($tipo === null) {
+                continue;
+            }
+
+            // O primeiro desconto define o tipo de desconto para os demais
+            if ($i === 1) {
+                $tipoPrimeiroDesconto = $tipo;
+            }
+
+            $data  = $dto->{'desconto' . $i . 'Data'} ?? null;
+            $valor = $dto->{'desconto' . $i . 'Valor'} ?? null;
+            
+            $descontos->add(new DescontoVO(
+                DescontoTipoEnum::tryFromString($tipoPrimeiroDesconto ?? DescontoTipoEnum::SEM_DESCONTO->name),
+                $valor,
+                new DateTimeImmutable($data),
+            ));
+        }
+
+        return $descontos;
+    }
+
+    private function formatDesconto(DescontoVO $desconto): array
+    {
+        $descontoFormatado = [
+            "tipo" => $desconto->tipo->value,
+            "dataExpiracao" => $desconto->dataLimite->format('d.m.Y')
+        ];
+
+        $keyValor = $desconto->tipo === DescontoTipoEnum::PERCENTUAL_ATE_DATA ? "porcentagem" : "valor";
+        
+        $descontoFormatado[$keyValor] = $desconto->__toString();
+
+        return $descontoFormatado;
     }
 }
