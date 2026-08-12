@@ -7,10 +7,12 @@ use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Collections\DescontoCollection;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DescontoTipoEnum;
 use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\JurosMoraTipoEnum;
+use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\MultaTipoEnum;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DescontoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DocumentoVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\JurosMoraVO;
+use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\MultaVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
 use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
@@ -179,6 +181,26 @@ class RegistrarBoletoFormatter
             'tipo'      => $jurosMoraVO->tipo->value,
             $keyValor   => $jurosMoraVO->__toString()
         ];
-        
+    }
+
+    private function addMulta(?string $tipo, ?string $valor, ?string $data): void
+    {
+        if (!$tipo) {
+            return;
+        }
+
+        $multaVO = new MultaVO(
+            tipo: MultaTipoEnum::tryFromString($tipo ?? MultaTipoEnum::SEM_MULTA->name),
+            valor: $valor,
+            data: new DateTimeImmutable($data)
+        );
+
+        $keyValor = $multaVO->tipo === MultaTipoEnum::PERCENTUAL ? "porcentagem" : "valor";
+    
+        $this->data['multa'] = [
+            'tipo'      => $multaVO->tipo->value,
+            $keyValor   => $multaVO->__toString(),
+            'data'      => $multaVO->data->format('d.m.Y')
+        ];
     }
 }

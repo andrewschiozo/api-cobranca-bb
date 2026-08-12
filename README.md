@@ -45,7 +45,7 @@ Isso não é uma LIB, é uma MÃE.
 - - [x] Segundo Desconto
 - - [x] Terceiro Desconto
 - [x] Juros (VALOR POR DIA ATRASO, TAXA MENSAL, ISENTO)
-- [ ] Multa (SEM MULTA, VALOR FIXO, PERCENTUAL)
+- [x] Multa (SEM MULTA, VALOR FIXO, PERCENTUAL)
 - [ ] Dados do Beneficiário Final (sacador avalista)
 - - [ ] Número do documento
 - - [ ] Nome

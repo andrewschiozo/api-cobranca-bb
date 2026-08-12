@@ -1,5 +1,6 @@
 <?php
-declare(strict_types= 1);
+
+declare(strict_types=1);
 
 namespace AndrewsChiozo\ApiCobrancaBb\Application\DTO;
 
@@ -35,8 +36,12 @@ class RegistrarBoletoDTO
         public readonly ?string $desconto3Valor,
         public readonly ?string $jurosMoraTipo,
         public readonly ?string $jurosMoraValor,
+        public readonly ?string $multaTipo,
+        public readonly ?string $multaValor,
+        public readonly ?string $multaData,
     ) {}
-public static function fromArray(array $data): self
+
+    public static function fromArray(array $data): self
     {
         return new self(
             numeroConvenio: $data['numeroConvenio'] ?? throw new InvalidArgumentException('Convênio não informado'),
@@ -66,6 +71,9 @@ public static function fromArray(array $data): self
             desconto3Valor: $data['desconto3Valor'] ?? null,
             jurosMoraTipo: $data['jurosMoraTipo'] ?? null,
             jurosMoraValor: $data['jurosMoraValor'] ?? null,
+            multaTipo: $data['multaTipo'] ?? null,
+            multaValor: $data['multaValor'] ?? null,
+            multaData: $data['multaData'] ?? null
         );
     }
 }
