@@ -49,7 +49,7 @@ class RegistrarBoletoDTO
             valorTitulo: $data['valorTitulo'] ?? throw new InvalidArgumentException('Valor do título não informado'),
             nossoNumero: $data['nossoNumero'] ?? throw new InvalidArgumentException('Nosso número não informado'),
             pagadorNumeroDocumento: $data['pagadorNumeroDocumento'] ?? throw new InvalidArgumentException('Documento do pagador não informado'),
-            pagadorCep: $data['pagadorCep'] ?? throw new InvalidArgumentException('Cep do pagador não informado'),
+            pagadorCep: $data['pagadorCep'] ?? null,
             pagadorNome: $data['pagadorNome'] ?? null,
             pagadorEndereco: $data['pagadorEndereco'] ?? null,
             pagadorCidade: $data['pagadorCidade'] ?? null,
