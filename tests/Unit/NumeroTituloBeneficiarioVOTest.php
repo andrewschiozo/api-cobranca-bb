@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\NumeroTituloBeneficiarioInvalidoException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\NumeroTituloBeneficiarioInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

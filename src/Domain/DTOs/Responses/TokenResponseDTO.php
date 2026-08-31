@@ -1,7 +1,7 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses;
 
 readonly class TokenResponseDTO
 {

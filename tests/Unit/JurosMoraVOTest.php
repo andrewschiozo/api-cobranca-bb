@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\JurosMoraTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\JurosMoraInvalidoException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\JurosMoraVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\JurosMoraTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\JurosMoraInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\JurosMoraVO;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DocumentoTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DocumentoInvalidoException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DocumentoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\DocumentoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\DocumentoInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DocumentoVO;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

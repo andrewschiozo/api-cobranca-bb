@@ -1,7 +1,7 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions;
 
 class DinheiroInvalidoException extends \Exception
 {

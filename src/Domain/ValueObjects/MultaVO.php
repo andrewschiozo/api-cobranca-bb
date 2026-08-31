@@ -1,10 +1,10 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\MultaTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\MultaInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\MultaTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\MultaInvalidoException;
 use DateTimeImmutable;
 
 readonly class MultaVO

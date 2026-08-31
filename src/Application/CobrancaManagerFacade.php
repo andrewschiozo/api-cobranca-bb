@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Application;
+namespace AndrewsChiozo\ApiCobrancaBB\Application;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AlterarBoletoUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AutenticarUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\DetalharBoletoUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\RegistrarBoletoUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\BBHttpClientAuditoria;
-use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\TokenResponseDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AlterarBoletoFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AlterarBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\DetalharBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\AlterarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\AutenticarDTO;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\DetalharBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Application\UseCases\AlterarBoletoUseCase;
+use AndrewsChiozo\ApiCobrancaBB\Application\UseCases\AutenticarUseCase;
+use AndrewsChiozo\ApiCobrancaBB\Application\UseCases\DetalharBoletoUseCase;
+use AndrewsChiozo\ApiCobrancaBB\Application\UseCases\RegistrarBoletoUseCase;
+use AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses\BBHttpClientAuditoria;
+use AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses\TokenResponseDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\AlterarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\AutenticarFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\AlterarBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\AutenticarResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\DetalharBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\RegistrarBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters\BBHttpClientAdapter;
 
 /**
  * Serviço de Fachada responsável por orquestrar a lógica de Cobranças.

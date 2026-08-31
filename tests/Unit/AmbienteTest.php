@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

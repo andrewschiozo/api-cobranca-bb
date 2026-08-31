@@ -1,13 +1,13 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
+namespace AndrewsChiozo\ApiCobrancaBB\Application\UseCases;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\TokenResponseDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\AutenticarDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses\TokenResponseDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\AutenticarResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\AutenticarFormatter;
 
 class AutenticarUseCase
 {

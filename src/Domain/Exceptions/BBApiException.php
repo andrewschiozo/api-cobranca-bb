@@ -1,9 +1,9 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\BBHttpClientAuditoria;
+use AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses\BBHttpClientAuditoria;
 use Exception;
 use Throwable;
 

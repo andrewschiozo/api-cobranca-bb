@@ -1,10 +1,10 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\JurosMoraTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\JurosMoraInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\JurosMoraTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\JurosMoraInvalidoException;
 
 readonly class JurosMoraVO
 {

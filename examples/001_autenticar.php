@@ -2,9 +2,9 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Application\CobrancaManagerFacade;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\AutenticarDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
 
 /**
  * O container é um facilitador, ele e entrega os CobrancaManagerFacade pronto para uso.

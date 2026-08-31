@@ -1,9 +1,9 @@
 <?php
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\NullLoggerAdapter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\ErrorResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters\BBHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters\NullLoggerAdapter;
 use DI\ContainerBuilder;
 use function DI\get;
 use GuzzleHttp\Client;

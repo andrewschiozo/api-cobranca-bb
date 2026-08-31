@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\RegistrarBoletoResponseParser;
 
 class RegistrarBoletoResponseParserTest extends TestCase
 {

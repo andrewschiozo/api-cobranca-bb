@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
+namespace AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\HttpCommunicationException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\HttpCommunicationException;
 use Override;
 use Psr\Log\LoggerInterface;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\RegistrarBoletoDTO;
 use PHPUnit\Framework\TestCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\RegistrarBoletoFormatter;
 
 class RegistrarBoletoFormatterTest extends TestCase
 {

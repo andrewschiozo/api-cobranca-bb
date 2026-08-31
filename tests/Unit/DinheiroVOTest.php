@@ -1,10 +1,10 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DinheiroInvalidoException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DinheiroVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\DinheiroInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DinheiroVO;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

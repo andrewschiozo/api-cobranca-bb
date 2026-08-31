@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
+namespace AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;

@@ -1,11 +1,11 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AlterarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorTituloVO;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\AlterarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NumeroConvenioVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\ValorTituloVO;
 use DateTimeImmutable;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DocumentoTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DocumentoInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\DocumentoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\DocumentoInvalidoException;
 
 class DocumentoVO
 {

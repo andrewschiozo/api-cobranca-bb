@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Ports;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Ports;
 
 interface HttpClientInterface
 {

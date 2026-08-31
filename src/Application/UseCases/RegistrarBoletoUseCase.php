@@ -1,13 +1,13 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
+namespace AndrewsChiozo\ApiCobrancaBB\Application\UseCases;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\RegistrarBoletoFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\RegistrarBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\RegistrarBoletoFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\RegistrarBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Ports\HttpClientInterface;
 
 class RegistrarBoletoUseCase
 {

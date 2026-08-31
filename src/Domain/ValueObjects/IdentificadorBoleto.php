@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
 /**
  * Value Object responsável por encapsular a regra de formatação do

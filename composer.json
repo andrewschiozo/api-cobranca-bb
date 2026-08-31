@@ -5,12 +5,12 @@
     "license": "GPL-3.0-only",
     "autoload": {
         "psr-4": {
-            "AndrewsChiozo\\ApiCobrancaBb\\": "src/"
+            "AndrewsChiozo\\ApiCobrancaBB\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AndrewsChiozo\\ApiCobrancaBb\\Tests\\": "tests/"
+            "AndrewsChiozo\\ApiCobrancaBB\\Tests\\": "tests/"
         }
     },
     "authors": [

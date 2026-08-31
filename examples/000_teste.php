@@ -1,6 +1,6 @@
 <?php
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DataEmissaoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DataEmissaoVO;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 $emissao = new DateTimeImmutable('2024-08-06');

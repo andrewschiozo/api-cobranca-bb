@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DescontoTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DescontoInvalidoException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DescontoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\DescontoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\DescontoInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DescontoVO;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

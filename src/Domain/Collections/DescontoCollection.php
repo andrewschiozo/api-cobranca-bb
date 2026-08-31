@@ -1,8 +1,8 @@
 <?php
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Collections;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Collections;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DescontoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DescontoVO;
 use ArrayIterator;
 use IteratorAggregate;
 use Traversable;

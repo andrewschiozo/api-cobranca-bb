@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\AutenticarDTO;
-use AndrewsChiozo\ApiCobrancaBb\Application\UseCases\AutenticarUseCase;
-use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\TokenResponseDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters\AutenticarFormatter;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\AutenticarResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters\BBHttpClientAdapter;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\AutenticarDTO;
+use AndrewsChiozo\ApiCobrancaBB\Application\UseCases\AutenticarUseCase;
+use AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses\TokenResponseDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters\AutenticarFormatter;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\AutenticarResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\ErrorResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters\BBHttpClientAdapter;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 

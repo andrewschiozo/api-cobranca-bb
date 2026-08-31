@@ -1,12 +1,12 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Infrastructure\Adapters;
+namespace AndrewsChiozo\ApiCobrancaBB\Infrastructure\Adapters;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\DTOs\Responses\BBHttpClientAuditoria;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\ErrorResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBB\Domain\DTOs\Responses\BBHttpClientAuditoria;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\ErrorResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Ports\HttpClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;

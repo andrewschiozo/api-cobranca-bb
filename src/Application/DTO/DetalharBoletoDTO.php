@@ -2,7 +2,7 @@
 
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Application\DTO;
+namespace AndrewsChiozo\ApiCobrancaBB\Application\DTO;
 
 use InvalidArgumentException;
 

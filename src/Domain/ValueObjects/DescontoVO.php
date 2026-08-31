@@ -1,10 +1,10 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DescontoTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DescontoInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\DescontoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\DescontoInvalidoException;
 use DateTimeImmutable;
 
 readonly class DescontoVO

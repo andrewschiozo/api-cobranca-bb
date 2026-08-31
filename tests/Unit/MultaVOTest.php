@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\MultaTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\MultaInvalidoException;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\MultaVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\MultaTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\MultaInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\MultaVO;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

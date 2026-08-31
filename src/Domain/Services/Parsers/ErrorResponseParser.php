@@ -1,9 +1,9 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
 use Exception;
 
 /**
@@ -14,7 +14,7 @@ class ErrorResponseParser
     /**
      * @param int $httpCode Código HTTP (400, 500, etc.)
      * @param string $errorJson JSON de erro retornado pela API.
-     * @throws \AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException
+     * @throws \AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException
      */
     public function parse(int $httpCode, string $errorJson): void
     {

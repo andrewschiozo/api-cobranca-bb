@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\NumeroTituloBeneficiarioInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\NumeroTituloBeneficiarioInvalidoException;
 use InvalidArgumentException;
 
 readonly class NumeroTituloBeneficiarioVO

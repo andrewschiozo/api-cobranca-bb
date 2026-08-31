@@ -1,7 +1,7 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Enums;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Enums;
 
 enum DescontoTipoEnum: int
 {

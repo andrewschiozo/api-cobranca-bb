@@ -1,8 +1,8 @@
 <?php
 
-use AndrewsChiozo\ApiCobrancaBb\Application\CobrancaManagerFacade;
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\BBApiException;
+use AndrewsChiozo\ApiCobrancaBB\Application\CobrancaManagerFacade;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\DetalharBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\BBApiException;
 
 require __DIR__ . '/../vendor/autoload.php';
 

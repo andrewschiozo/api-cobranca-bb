@@ -1,9 +1,9 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\Exceptions\DinheiroInvalidoException;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Exceptions\DinheiroInvalidoException;
 use InvalidArgumentException;
 
 readonly class DinheiroVO 

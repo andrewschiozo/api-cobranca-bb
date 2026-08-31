@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters;
 
 /**
  * Serviço responsável por formatar os dados para a autenticação

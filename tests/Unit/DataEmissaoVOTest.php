@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Tests\Unit;
+namespace AndrewsChiozo\ApiCobrancaBB\Tests\Unit;
 
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DataEmissaoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DataEmissaoVO;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

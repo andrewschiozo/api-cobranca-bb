@@ -1,9 +1,9 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\Responses\RegistroBoletoResponse;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\Responses\RegistroBoletoResponse;
 use JsonException;
 
 /**

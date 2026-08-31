@@ -1,24 +1,24 @@
 <?php 
 declare(strict_types=1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Domain\Services\Formatters;
+namespace AndrewsChiozo\ApiCobrancaBB\Domain\Services\Formatters;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\RegistrarBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Collections\DescontoCollection;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\DescontoTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\JurosMoraTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Enums\MultaTipoEnum;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DescontoVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\DocumentoVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\JurosMoraVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\MultaVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\PagadorVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorAbatimentoVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\ValorTituloVO;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\RegistrarBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Collections\DescontoCollection;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\DescontoTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\JurosMoraTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Enums\MultaTipoEnum;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DescontoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\DocumentoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\IdentificadorBoleto;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\JurosMoraVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\MultaVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NossoNumeroVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NumeroConvenioVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NumeroTituloBeneficiarioVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\PagadorVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\ValorAbatimentoVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\ValorTituloVO;
 use DateTimeImmutable;
 
 /**

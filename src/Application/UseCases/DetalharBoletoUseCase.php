@@ -1,14 +1,14 @@
 <?php
 declare(strict_types= 1);
 
-namespace AndrewsChiozo\ApiCobrancaBb\Application\UseCases;
+namespace AndrewsChiozo\ApiCobrancaBB\Application\UseCases;
 
-use AndrewsChiozo\ApiCobrancaBb\Application\DTO\DetalharBoletoDTO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Services\Parsers\DetalharBoletoResponseParser;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\IdentificadorBoleto;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NossoNumeroVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\ValueObjects\NumeroConvenioVO;
-use AndrewsChiozo\ApiCobrancaBb\Domain\Ports\HttpClientInterface;
+use AndrewsChiozo\ApiCobrancaBB\Application\DTO\DetalharBoletoDTO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Services\Parsers\DetalharBoletoResponseParser;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\IdentificadorBoleto;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NossoNumeroVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\ValueObjects\NumeroConvenioVO;
+use AndrewsChiozo\ApiCobrancaBB\Domain\Ports\HttpClientInterface;
 
 class DetalharBoletoUseCase
 {
