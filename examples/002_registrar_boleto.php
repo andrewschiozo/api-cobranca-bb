@@ -34,7 +34,7 @@ $params = [
     'numeroConvenio' => $container->get('bb.config')['convenio'],
     'dataVencimento' => date("Y-m-d", strtotime("+30 days")),
     'valorTitulo' => '100.56',
-    'nossoNumero' => date('ymdhs'),
+    // 'nossoNumero' => date('ymdhs'),
     'pagadorNumeroDocumento' => '81676009000119',
     'pagadorCep' => '01035971',
     // 'dataEmissao' => date("Y-m-d", strtotime("-8 days")), // opcional
@@ -49,8 +49,8 @@ $params = [
     // 'desconto3Tipo' => 'PERCENTUAL', // opcional
     // 'desconto3Data' => date("Y-m-d", strtotime("+12 days")),
     // 'desconto3Valor' => '8.00', // opcional
-    'jurosMoraTipo' => 'VALOR_DIA_ATRASO', // opcional
-    'jurosMoraValor' => '5.00', // opcional
+    // 'jurosMoraTipo' => 'VALOR_DIA_ATRASO', // opcional
+    // 'jurosMoraValor' => '5.00', // opcional
 ];
 
 try {

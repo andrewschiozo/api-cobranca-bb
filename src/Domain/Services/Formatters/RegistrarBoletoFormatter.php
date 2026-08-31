@@ -38,7 +38,6 @@ class RegistrarBoletoFormatter
     public function format(RegistrarBoletoDTO $dto): array
     {
         $convenio = new NumeroConvenioVO($dto->numeroConvenio);
-        $nossoNumero = new NossoNumeroVO($dto->nossoNumero);
         $dataVencimento = new DateTimeImmutable($dto->dataVencimento);
         $valortitulo = new ValorTituloVO($dto->valorTitulo);
         $pagador = new PagadorVO(
@@ -53,20 +52,18 @@ class RegistrarBoletoFormatter
             email: $dto->pagadorEmail ?? null,
         );
 
-        $numeroTituloCliente = IdentificadorBoleto::create($convenio, $nossoNumero)->identificadorCompleto;
-
         $this->data = [
             'numeroConvenio' => $convenio->numero, 
             'dataVencimento' => $dataVencimento->format('d.m.Y'),
             'valorOriginal' => $valortitulo->formatadoParaBB(),
-            'numeroTituloCliente' => $numeroTituloCliente,
             'pagador' => [
                 'tipoInscricao' => $pagador->documento->tipo->value,
                 'numeroInscricao' => $pagador->documento->valor,
                 'cep' => $pagador->cep
             ],
         ];
-
+        
+        $this->addNossoNumero($convenio, $dto->nossoNumero);
         $this->addDataEmissao($dto->dataEmissao);
         $this->addValorAbatimento($dto->valorAbatimento);
         $this->addNumeroTituloBeneficiario($dto->numeroTituloBeneficiario);
@@ -74,6 +71,16 @@ class RegistrarBoletoFormatter
         $this->addJurosMora($dto->jurosMoraTipo, $dto->jurosMoraValor);
 
         return $this->data;
+    }
+
+    private function addNossoNumero(NumeroConvenioVO $convenio, ?string $nossoNumero = null): void
+    {
+        if ($nossoNumero) {
+            $nossoNumero = new NossoNumeroVO($nossoNumero);
+            $numeroTituloCliente = IdentificadorBoleto::create($convenio, $nossoNumero)->identificadorCompleto;
+            $this->data['numeroTituloCliente'] = $numeroTituloCliente;
+        }
+        
     }
 
     private function addDataEmissao(?string $dataEmissao = null): void
