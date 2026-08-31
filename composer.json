@@ -23,6 +23,7 @@
         "phpunit/phpunit": "^12.4"
     },
     "require": {
+        "php": ">=8.4",
         "guzzlehttp/guzzle": "^7.10",
         "psr/log": "^3.0",
         "php-di/php-di": "^7.1",
